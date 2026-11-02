@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BitePals · Bite into better habits</title>
+<meta name="description" content="When Bite Time pops, snap your plate with your friends, see what's on it and learn one small food fact a day. BitePals is coming soon to iPhone and Android.">
+<link rel="canonical" href="https://bitepals.app/">
+<meta name="theme-color" content="#31593F">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BitePals">
+<meta property="og:url" content="https://bitepals.app/">
+<meta property="og:title" content="BitePals · Bite into better habits">
+<meta property="og:description" content="Snap your plate at Bite Time with your friends, see what's on it, and learn one small food fact a day. Coming soon to iPhone and Android.">
+<meta property="og:image" content="https://bitepals.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BitePals: Bite into better habits, with Brocco the broccoli">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/gabarito-latin-f032fd.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bitepals.app/#org","name":"BitePals","url":"https://bitepals.app/","logo":"https://bitepals.app/apple-touch-icon.png","slogan":"Bite into better habits"},{"@type":"WebSite","@id":"https://bitepals.app/#site","name":"BitePals","url":"https://bitepals.app/","inLanguage":"en","publisher":{"@id":"https://bitepals.app/#org"}}]}</script>
+<style>
+:root{
+  /* Layout: a forest hero holding a Bite you can actually play, then the meal's story in order:
+     names, numbers, plates, lessons, friends, privacy. Brand palette from the partner's charter. */
+  --forest:#31593F; --forest-deep:#1F3D2A; --leaf:#658C3E; --lime:#D4D952; --lime-lip:#A6AB2C;
+  --lime-tint:#E2EAC4; --pill:#DCE7B8; --paper:#EFF2E4; --ink:#0E1912; --ink-line:#24362B;
+  --on-ink:#F4F7EE; --muted-on-ink:#9FB0A4; --text:#14281C; --muted:#55665A; --line:#DCE2CC;
+  --dash:#9AA88E; --honey:#FFC53D; --coral:#FF7A5C; --white:#FFFFFF;
+  --display:"Gabarito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+  --r-xl:40px; --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --gutter:clamp(18px,4vw,44px); --maxw:1240px;
+  color-scheme:light;
+}
+@property --bite{syntax:"<length>";inherits:true;initial-value:0px}
+@property --mk{syntax:"<number>";inherits:true;initial-value:1}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--display);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:10px}
+.on-dark :focus-visible{outline-color:var(--lime)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+h1,h2,h3,h4{font-weight:900;letter-spacing:-.028em;line-height:.95;text-wrap:balance;margin:0}
+h2{font-size:clamp(2.5rem,5.4vw,4.7rem)}
+p{margin:0}
+.lede{font-size:clamp(1.06rem,1.45vw,1.24rem);line-height:1.5;color:var(--muted);max-width:40ch;text-wrap:pretty}
+.on-dark .lede{color:var(--muted-on-ink)}
+.overline{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.tag-mono{font-family:var(--mono);font-size:.74rem;font-weight:600;letter-spacing:0}
+.mark{background:linear-gradient(transparent 58%,var(--lime) 58% 92%,transparent 92%);padding-inline:.06em}
+.on-dark .mark{background:none;color:var(--lime)}
+
+/* Buttons: the app's lip press */
+.btn{--lip:var(--lime-lip);display:inline-flex;align-items:center;justify-content:center;gap:.55em;font-weight:800;font-size:1.02rem;line-height:1;padding:1.05em 1.6em;border-radius:16px;background:var(--lime);color:var(--forest-deep);box-shadow:0 5px 0 var(--lip);transform:translateY(0);transition:transform .12s ease,box-shadow .12s ease;text-decoration:none;white-space:nowrap}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 0 var(--lip)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--lip)}
+.btn--forest{--lip:var(--ink);background:var(--forest);color:var(--paper)}
+.btn--ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.btn--ghost:hover{box-shadow:inset 0 0 0 2px currentColor;transform:translateY(-1px)}
+.btn--ghost:active{transform:translateY(1px);box-shadow:inset 0 0 0 2px currentColor}
+.btn svg{width:1.15em;height:1.15em;flex:none}
+
+/* Nav */
+.nav{position:fixed;top:14px;left:50%;translate:-50% 0;z-index:60;width:min(calc(100% - 2*var(--gutter)),1180px);display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-radius:999px;background:rgba(239,242,228,.86);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);box-shadow:0 0 0 1.5px rgba(20,40,28,.07),0 14px 34px -20px rgba(14,25,18,.55);transition:box-shadow .3s}
+.nav__logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.25rem;letter-spacing:-.03em;text-decoration:none;color:var(--forest);margin-right:auto}
+.nav__logo .brocco-slot{width:30px}
+.nav__links{display:flex;gap:2px}
+.nav__links a{font-weight:600;font-size:.95rem;text-decoration:none;padding:.55em .9em;border-radius:999px;color:var(--text)}
+.nav__links a:hover{background:var(--lime-tint)}
+.nav .btn{padding:.8em 1.2em;font-size:.95rem;border-radius:999px;box-shadow:0 3px 0 var(--lip)}
+@media (max-width:860px){.nav__links{display:none}}
+
+/* Hero */
+.hero{position:relative;margin:10px;border-radius:var(--r-xl);background:var(--forest);color:var(--paper);overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 76% 46%,rgba(212,217,82,.30),transparent 42%),radial-gradient(rgba(239,242,228,.075) 1.3px,transparent 1.5px) 0 0/22px 22px}
+.hero__grid{position:relative;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:28px;align-items:center;max-width:var(--maxw);margin-inline:auto;padding:128px var(--gutter) 74px}
+.hero__soon{display:inline-flex;align-items:center;gap:.6em;font-weight:700;font-size:.9rem;padding:.5em 1em .5em .6em;border-radius:999px;background:rgba(239,242,228,.1);box-shadow:inset 0 0 0 1.5px rgba(239,242,228,.18);margin-bottom:26px}
+.hero__soon i{width:9px;height:9px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 0 rgba(212,217,82,.7);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(212,217,82,0)}100%{box-shadow:0 0 0 0 rgba(212,217,82,0)}}
+.hero h1{font-size:clamp(3.05rem,8.2vw,7.6rem);line-height:.88;letter-spacing:-.04em;color:var(--paper)}
+.hero h1 .ln{display:block}
+.marker{position:relative;display:inline-block;color:var(--forest-deep);padding:0 .34em .02em .1em;margin-left:-.08em;margin-top:.06em;white-space:nowrap;z-index:0;--bite:0px}
+.marker::before{content:"";position:absolute;inset:.06em 0 -.04em;background:var(--lime);border-radius:.13em;z-index:-1;transform-origin:left center;transform:scaleX(var(--mk));
+  -webkit-mask:radial-gradient(circle at calc(100% + .05em) -.03em,#0000 var(--bite),#000 calc(var(--bite) + .5px)),radial-gradient(circle at calc(100% - .4em) -.17em,#0000 calc(var(--bite)*.9),#000 calc(var(--bite)*.9 + .5px)),radial-gradient(circle at calc(100% + .21em) .43em,#0000 calc(var(--bite)*.84),#000 calc(var(--bite)*.84 + .5px));
+  -webkit-mask-composite:source-in;mask:radial-gradient(circle at calc(100% + .05em) -.03em,#0000 var(--bite),#000 calc(var(--bite) + .5px)),radial-gradient(circle at calc(100% - .4em) -.17em,#0000 calc(var(--bite)*.9),#000 calc(var(--bite)*.9 + .5px)),radial-gradient(circle at calc(100% + .21em) .43em,#0000 calc(var(--bite)*.84),#000 calc(var(--bite)*.84 + .5px));mask-composite:intersect}
+.crumb{position:absolute;right:.12em;top:.1em;width:.07em;height:.07em;border-radius:40%;background:var(--lime);opacity:0;pointer-events:none}
+.hero__sub{margin-top:28px;font-size:clamp(1.08rem,1.5vw,1.3rem);line-height:1.5;color:rgba(239,242,228,.82);max-width:33ch;text-wrap:pretty}
+.hero__cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:34px}
+.hero__cta .btn--ghost{color:var(--paper)}
+.hero__fine{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.88rem;font-weight:600;color:rgba(239,242,228,.7)}
+.hero__fine span{display:inline-flex;align-items:center;gap:.45em}
+.hero__fine svg{width:15px;height:15px;color:var(--lime)}
+.sticker{position:absolute;z-index:-1;width:var(--w,84px);filter:drop-shadow(0 14px 18px rgba(0,0,0,.28));pointer-events:none}
+.sticker img{width:100%;animation:bob var(--d,6s) ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(-6px) rotate(var(--r0,-6deg))}to{transform:translateY(8px) rotate(var(--r1,5deg))}}
+
+/* Phone stage */
+.stage{position:relative;justify-self:center;width:340px;height:690px;transform-origin:top center}
+.stage-holder{position:relative;justify-self:center;width:100%;display:flex;justify-content:center}
+.phone{position:absolute;left:20px;top:10px;width:300px;height:640px;border-radius:50px;background:#09110c;padding:10px;box-shadow:0 0 0 2px #36503f,inset 0 0 0 2px #2a3f31,0 60px 90px -40px rgba(0,0,0,.75),0 30px 40px -30px rgba(0,0,0,.5);z-index:2}
+.phone::after{content:"";position:absolute;right:-4px;top:150px;width:3px;height:64px;border-radius:2px;background:#2a3f31}
+.screen{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--paper);color:var(--text);font-size:12px;line-height:1.3;font-family:var(--display)}
+.island{position:absolute;top:9px;left:50%;translate:-50% 0;width:84px;height:24px;border-radius:14px;background:#09110c;z-index:20}
+.status{position:absolute;top:0;inset-inline:0;height:42px;display:flex;align-items:center;justify-content:space-between;padding:4px 24px 0 28px;font-weight:700;font-size:12.5px;z-index:19;pointer-events:none}
+.status svg{height:11px}
+.status__icons{display:flex;gap:5px;align-items:center}
+.layer{position:absolute;inset:0;display:flex;flex-direction:column}
+.layer--cam,.layer--scan{visibility:hidden;opacity:0}
+.is-fallback-scan .layer--scan,.is-fallback-done .layer--feed{visibility:visible;opacity:1}
+
+/* Feed layer */
+.lf{padding-top:44px;height:100%;display:flex;flex-direction:column}
+.appbar{display:grid;grid-template-columns:30px 1fr 30px;align-items:center;padding:2px 14px 8px}
+.appbar__me{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 1.6px var(--text);display:grid;place-items:center}
+.appbar__me svg{width:14px}
+.appbar__brand{text-align:center;font-weight:900;font-size:15px;letter-spacing:-.02em;color:var(--forest)}
+.appbar__brand small{display:block;font-size:10px;font-weight:700;color:var(--text);letter-spacing:0;margin-top:1px}
+.appbar__brand small::after{content:"";display:block;width:22px;height:3px;border-radius:2px;background:var(--lime);margin:2px auto 0}
+.btcard{margin:0 12px;background:var(--white);border-radius:20px;padding:13px 13px 13px;box-shadow:0 1px 0 var(--line);overflow:hidden}
+.btcard__top{display:grid;grid-template-columns:1fr 72px;align-items:center}
+.btcard .overline{font-size:8.5px;color:var(--muted)}
+.timer{font-size:40px;font-weight:900;letter-spacing:-.03em;line-height:1;margin-top:4px;font-variant-numeric:tabular-nums}
+.btcard__sub{font-size:11px;color:var(--muted);margin-top:3px}
+.btn-app{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:11px;height:40px;border-radius:13px;background:var(--lime);color:var(--forest-deep);font-weight:900;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 0 var(--lime-lip)}
+.btn-app svg{width:15px;height:15px}
+.btn-app:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.yourow{margin:0 12px;display:flex;align-items:center;gap:9px;padding:9px 10px;background:var(--white);border-radius:16px;height:0;opacity:0;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+.yourow img{width:38px;height:38px;border-radius:10px;object-fit:cover}
+.yourow b{display:block;font-size:11.5px}
+.yourow span{font-size:10px;color:var(--muted)}
+.yourow .ok{margin-left:auto;width:22px;height:22px;border-radius:50%;background:var(--lime);display:grid;place-items:center}
+.yourow .ok svg{width:12px}
+.feedrow{display:flex;justify-content:space-between;align-items:baseline;padding:12px 15px 7px;font-size:11px}
+.feedrow span{color:var(--muted);font-size:10px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px}
+.tile{position:relative;margin:0;height:139px;border-radius:16px;overflow:hidden;background:#1d2a21}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(11px) saturate(1.1);transform:scale(1.15)}
+.tile__lock{position:absolute;left:50%;top:44%;translate:-50% -50%;width:32px;height:32px;border-radius:50%;background:rgba(14,25,18,.55);display:grid;place-items:center;color:#fff;backdrop-filter:blur(4px)}
+.tile__lock svg{width:15px}
+.tile__meta{position:absolute;left:7px;right:7px;top:7px;display:flex;align-items:center;gap:5px;color:#fff;font-weight:700;font-size:10px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.tile__meta time{font-weight:500;opacity:.85;margin-left:auto}
+.av{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-size:9.5px;font-weight:900;background:var(--c,var(--lime));color:var(--fc,var(--forest-deep));text-shadow:none;box-shadow:0 0 0 1.5px rgba(255,255,255,.9)}
+.tile__cap{position:absolute;left:0;right:0;bottom:0;padding:18px 8px 7px;color:#fff;font-size:10px;font-weight:600;line-height:1.25;background:linear-gradient(transparent,rgba(0,0,0,.62));opacity:0}
+.tile__late{font-size:8.5px;font-weight:800;background:rgba(255,255,255,.22);padding:1px 5px;border-radius:5px;margin-left:3px}
+.tabbar{margin-top:auto;height:58px;display:flex;justify-content:space-around;align-items:center;padding-bottom:8px;background:var(--paper);border-top:1px solid var(--line)}
+.tabbar span{width:52px;height:30px;border-radius:15px;display:grid;place-items:center;color:var(--muted)}
+.tabbar span.on{background:var(--pill);color:var(--forest)}
+.tabbar svg{width:17px}
+
+/* Camera layer */
+.layer--cam{background:#050806;color:#fff;align-items:center}
+.cam-hint{margin-top:62px;font-size:10.5px;font-weight:600;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.12)}
+.cam-view{position:relative;margin-top:26px;width:244px;height:244px}
+.cam-view img{width:100%;height:100%;object-fit:cover;border-radius:6px}
+.cam-c{position:absolute;width:30px;height:30px;border:3px solid var(--lime)}
+.cam-c.tl{left:-8px;top:-8px;border-right:0;border-bottom:0;border-radius:10px 0 0 0}
+.cam-c.tr{right:-8px;top:-8px;border-left:0;border-bottom:0;border-radius:0 10px 0 0}
+.cam-c.bl{left:-8px;bottom:-8px;border-right:0;border-top:0;border-radius:0 0 0 10px}
+.cam-c.br{right:-8px;bottom:-8px;border-left:0;border-top:0;border-radius:0 0 10px 0}
+.cam-label{margin-top:30px;font-weight:800;font-size:13px;letter-spacing:.02em}
+.shutter{margin-top:auto;margin-bottom:44px;width:66px;height:66px;border-radius:50%;box-shadow:inset 0 0 0 4px #fff;display:grid;place-items:center}
+.shutter::after{content:"";width:52px;height:52px;border-radius:50%;background:#fff}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+
+/* Scan layer */
+.layer--scan{background:var(--paper)}
+.scanphoto{position:relative;height:300px;overflow:hidden;background:#000}
+.scanphoto>img{width:100%;height:100%;object-fit:cover}
+.scanphoto__top{position:absolute;top:46px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center}
+.pillbtn{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 10px;border-radius:13px;background:rgba(14,25,18,.55);color:#fff;font-size:10px;font-weight:700;backdrop-filter:blur(6px)}
+.pillbtn.round{width:26px;padding:0;justify-content:center}
+.pillbtn svg{width:11px}
+.scanline{position:absolute;left:0;right:0;top:0;height:70px;background:linear-gradient(to bottom,transparent,rgba(212,217,82,.0) 20%,rgba(212,217,82,.45) 92%,var(--lime) 96%,transparent);opacity:0;mix-blend-mode:screen}
+.scanstatus{position:absolute;left:50%;bottom:44px;translate:-50% 0;white-space:nowrap;font-size:10.5px;font-weight:700;padding:6px 11px;border-radius:999px;background:rgba(14,25,18,.72);color:#fff;opacity:0}
+.lbl{position:absolute;left:var(--x);top:var(--y);width:0;height:0}
+.lbl i{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 2.5px #fff,0 2px 8px rgba(0,0,0,.4)}
+.lbl span{position:absolute;left:0;bottom:9px;translate:-50% 0;white-space:nowrap;font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:7px;background:#fff;color:var(--text);box-shadow:0 3px 10px rgba(0,0,0,.3)}
+.lbl.as span{background:rgba(255,255,255,.92);box-shadow:inset 0 0 0 1.5px var(--dash),0 3px 10px rgba(0,0,0,.3);outline:1.5px dashed var(--forest);outline-offset:-1.5px}
+.lbl.as i{background:#fff;box-shadow:0 0 0 2.5px var(--forest),0 2px 8px rgba(0,0,0,.4)}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:356px;background:var(--white);border-radius:24px 24px 0 0;padding:16px 15px 0;display:flex;flex-direction:column;box-shadow:0 -10px 30px -12px rgba(0,0,0,.35);transform:translateY(105%)}
+.sheet .overline{font-size:8.5px;color:var(--muted)}
+.sheet__head{display:grid;grid-template-columns:1fr 52px;align-items:end}
+.sheet h4{font-size:17px;font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-top:3px}
+.kcal{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1;margin-top:5px;font-variant-numeric:tabular-nums}
+.kcal small{font-size:12px;font-weight:700;letter-spacing:0;margin-left:3px}
+.est{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;color:var(--forest);text-decoration:underline dashed;text-underline-offset:3px}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);margin-top:11px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.macro{padding:7px 0 7px 8px;border-left:1px solid var(--line)}
+.macro:first-child{border-left:0;padding-left:0}
+.macro small{display:block;font-size:9px;color:var(--muted)}
+.macro b{font-size:16px;font-weight:900;font-variant-numeric:tabular-nums}
+.macro b em{font-style:normal;font-size:10px;font-weight:700;margin-left:1px}
+.found{display:flex;justify-content:space-between;margin-top:10px;font-size:10.5px;font-weight:800}
+.found span{font-weight:500;color:var(--muted);font-size:9.5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;height:50px;overflow:hidden}
+.chip{font-size:9.5px;font-weight:700;padding:4px 7px;border-radius:7px;box-shadow:inset 0 0 0 1.3px var(--line)}
+.chip.q{box-shadow:none;outline:1.4px dashed var(--dash);outline-offset:-1.4px}
+.platebar{display:flex;gap:3px;margin-top:9px;height:9px}
+.platebar i{border-radius:3px;height:100%}
+.platekey{display:flex;gap:10px;margin-top:5px;font-size:8.8px;color:var(--muted)}
+.platekey span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--k);margin-right:4px;vertical-align:-1px}
+.sheet .btn-app{margin-top:auto;margin-bottom:22px}
+
+/* Floating artifacts around the phone */
+.float{position:absolute;z-index:3;display:flex;align-items:center;gap:8px;font-weight:800;font-size:.86rem;padding:.6em .9em;border-radius:16px;background:var(--white);color:var(--text);box-shadow:inset 0 0 0 2px var(--forest-deep),0 14px 26px -14px rgba(0,0,0,.55);white-space:nowrap}
+.float svg{width:17px;height:17px;flex:none}
+.float--bt{left:-60px;top:44px;rotate:-6deg;background:var(--lime);color:var(--forest-deep)}
+.float--streak{left:-58px;bottom:70px;rotate:5deg;background:var(--honey);color:var(--ink)}
+.float--fdc{right:-132px;top:292px;rotate:4deg;font-family:var(--mono);font-size:.74rem;font-weight:600;flex-direction:column;align-items:flex-start;gap:2px;opacity:0}
+.float--fdc b{font-family:var(--display);font-size:.9rem;font-weight:900}
+.bubble{position:absolute;z-index:4;display:flex;align-items:center;gap:8px;padding:.55em .85em .55em .55em;border-radius:18px 18px 18px 6px;background:var(--white);color:var(--text);font-weight:700;font-size:.86rem;box-shadow:0 16px 30px -14px rgba(0,0,0,.55);white-space:nowrap;opacity:0}
+.bubble .av{width:24px;height:24px;font-size:11px;box-shadow:none}
+.bubble--1{right:-96px;top:120px}
+.bubble--2{right:-60px;top:380px;border-radius:18px 18px 6px 18px}
+.bubble--3{right:-40px;top:528px;border-radius:18px 18px 6px 18px}
+.note{position:absolute;right:0;top:-36px;z-index:5;font-family:var(--hand);font-size:1.75rem;line-height:1;color:var(--lime);rotate:-5deg;white-space:nowrap}
+.note svg{position:absolute;left:-58px;top:20px;width:64px;height:70px;color:var(--lime)}
+.replay{position:absolute;left:50%;bottom:-6px;translate:-50% 0;z-index:5;display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.86rem;padding:.6em 1.05em;border-radius:999px;background:rgba(239,242,228,.12);color:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(239,242,228,.3)}
+.replay svg{width:15px}
+.replay[hidden]{display:none}
+
+/* Tapes */
+.tapes{position:relative;height:178px;margin:-18px 0 0;overflow:hidden;z-index:2;pointer-events:none}
+.tape{position:absolute;left:-5%;width:110%;display:flex;overflow:hidden;padding:14px 0}
+.tape--lime{top:36px;background:var(--lime);rotate:-2.4deg;color:var(--forest-deep);box-shadow:0 10px 24px -14px rgba(14,25,18,.5);z-index:2}
+.tape--ink{top:78px;background:var(--ink);rotate:1.8deg;color:var(--paper)}
+.tape__track{display:flex;flex:none;gap:34px;padding-right:34px;align-items:center;animation:marq var(--t,46s) linear infinite}
+.tape--ink .tape__track{animation-direction:reverse}
+@keyframes marq{to{transform:translateX(-100%)}}
+.tape__item{display:inline-flex;align-items:center;gap:12px;font-weight:900;font-size:1.45rem;letter-spacing:-.02em;white-space:nowrap}
+.tape__item img{width:40px;height:40px}
+.tape--ink .tape__item{font-size:1.2rem;gap:34px}
+.tape--ink .tape__item::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--lime)}
+
+/* Sections */
+section{position:relative}
+.sec{padding-block:clamp(84px,11vw,150px)}
+.panel{margin:10px;border-radius:var(--r-xl);overflow:hidden;isolation:isolate}
+.sec-head{display:grid;gap:20px;max-width:760px}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--forest);letter-spacing:.02em}
+.kicker::before{content:"";width:28px;height:2px;background:currentColor}
+.on-dark .kicker{color:var(--lime)}
+
+/* How: photo to numbers */
+.how__grid{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:clamp(30px,5vw,80px);align-items:start;margin-top:0}
+.how__left{display:grid;gap:22px;align-content:start}
+@media (min-width:961px){.how__left{position:sticky;top:110px}}
+.how__points{display:grid;gap:10px;margin:6px 0 0;padding:0;list-style:none}
+.how__points li{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:1rem}
+.how__points svg{flex:none;width:20px;height:20px;margin-top:2px;color:var(--forest)}
+.photo-card{position:relative;width:min(100%,330px);aspect-ratio:1;border-radius:24px;overflow:hidden;box-shadow:0 30px 50px -30px rgba(14,25,18,.6);rotate:-2deg;background:#000}
+.photo-card img{width:100%;height:100%;object-fit:cover}
+.photo-card .lbl span{font-size:10.5px}
+.photo-card__tag{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:.7rem;font-weight:600;padding:5px 9px;border-radius:8px;background:rgba(14,25,18,.72);color:#fff}
+.board{background:var(--white);border-radius:var(--r-lg);padding:clamp(16px,2.2vw,26px);box-shadow:0 0 0 1.5px var(--line),0 40px 60px -45px rgba(14,25,18,.45)}
+.board__head{display:grid;grid-template-columns:minmax(0,.9fr) 46px minmax(0,1.6fr);gap:0;align-items:end;padding:0 4px 12px;border-bottom:1.5px solid var(--line);font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.board__head span:last-child{display:flex;justify-content:space-between}
+.pipe{list-style:none;margin:0;padding:0}
+.prow{display:grid;grid-template-columns:minmax(0,.9fr) 46px minmax(0,1.6fr);align-items:center;padding:9px 4px;border-bottom:1px solid var(--line)}
+.ainame{justify-self:start;display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.95rem;padding:.38em .7em;border-radius:10px;background:var(--lime-tint);white-space:nowrap}
+.ainame em{font-style:normal;font-family:var(--mono);font-size:.64rem;font-weight:600;color:var(--forest);text-transform:uppercase;letter-spacing:.04em}
+.prow.as .ainame{background:transparent;outline:1.6px dashed var(--dash);outline-offset:-1.6px}
+.wire{position:relative;height:2px;background:repeating-linear-gradient(90deg,var(--forest) 0 5px,transparent 5px 9px);transform-origin:left center;margin-inline:6px}
+.wire::after{content:"";position:absolute;right:-2px;top:-4px;border:5px solid transparent;border-left:7px solid var(--forest);border-right:0}
+.db{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 12px;align-items:center;font-size:.86rem;min-width:0}
+.db__id{display:grid;gap:3px;min-width:0;justify-items:start}
+.db code{font-family:var(--mono);font-size:.7rem;font-weight:600;padding:.25em .5em;border-radius:6px;background:var(--ink);color:var(--lime);white-space:nowrap}
+.db__desc{color:var(--muted);font-size:.8rem;line-height:1.25}
+.db__amt{font-family:var(--mono);font-size:.76rem;font-weight:600;white-space:nowrap}
+.db__amt.q{color:var(--forest);background:var(--lime-tint);padding:.15em .45em;border-radius:6px}
+.db__kcal{font-weight:900;font-variant-numeric:tabular-nums;min-width:3.2ch;text-align:right}
+.total{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 4px 6px}
+.total__label{font-weight:800}
+.total__label small{display:block;font-size:.8rem;font-weight:600;color:var(--muted)}
+.total__num{font-size:clamp(2.2rem,3.6vw,3rem);font-weight:900;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.total__num small{font-size:1rem;font-weight:800;margin-left:4px;letter-spacing:0}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.qbox{padding:14px;border-radius:var(--r-md);background:var(--paper)}
+.qbox p{font-weight:800;font-size:.95rem;display:flex;gap:8px;align-items:center}
+.qbox p span{font-family:var(--mono);font-size:.66rem;font-weight:600;color:var(--forest);background:var(--white);padding:.2em .5em;border-radius:6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.seg button{font-weight:800;font-size:.86rem;padding:.55em .85em;border-radius:11px;background:var(--white);box-shadow:inset 0 0 0 1.5px var(--line),0 3px 0 var(--line);transition:transform .1s}
+.seg button:active{transform:translateY(2px)}
+.seg button[aria-pressed="true"]{background:var(--forest);color:var(--paper);box-shadow:0 3px 0 var(--ink)}
+
+/* Plates */
+.plates{background:var(--lime);color:var(--forest-deep)}
+.plates .lede{color:var(--forest-deep);opacity:.86}
+.plates__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.rules{display:grid;gap:12px;margin-top:28px;max-width:44ch}
+.rule{display:flex;gap:12px;align-items:flex-start;font-weight:700;padding:14px 16px;border-radius:var(--r-md);background:rgba(255,255,255,.42);box-shadow:inset 0 0 0 1.5px rgba(31,61,42,.14)}
+.rule svg{flex:none;width:22px;height:22px;margin-top:1px}
+.flip{position:relative;justify-self:center;width:min(100%,430px);background:var(--white);color:var(--text);border-radius:30px;padding:22px;box-shadow:0 0 0 2.5px var(--forest-deep),0 14px 0 var(--forest-deep),0 50px 60px -30px rgba(14,25,18,.5)}
+.flip__top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.flip__dish{font-weight:900;font-size:1.15rem;letter-spacing:-.02em}
+.flip__dish small{display:block;font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:0}
+.toggle{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:14px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line)}
+.toggle button{position:relative;z-index:1;font-weight:800;font-size:.86rem;padding:.55em .9em;border-radius:10px;transition:color .25s}
+.toggle button[aria-pressed="true"]{color:var(--paper)}
+.toggle__thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:10px;background:var(--forest);transition:transform .45s cubic-bezier(.5,1.6,.4,1)}
+.toggle[data-view="plates"] .toggle__thumb{transform:translateX(100%)}
+.flip__body{position:relative;height:300px;margin-top:18px}
+.view{position:absolute;inset:0;display:flex;flex-direction:column}
+.view--plates{visibility:hidden;opacity:0}
+.v-big{font-size:clamp(3.2rem,6vw,4.4rem);font-weight:900;letter-spacing:-.04em;line-height:.95;font-variant-numeric:tabular-nums}
+.v-big small{font-size:1.1rem;letter-spacing:0;margin-left:5px}
+.v-est{margin-top:8px;font-size:.84rem;font-weight:700;color:var(--forest)}
+.v-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:auto}
+.v-macro{padding:12px 10px;border-radius:14px;background:var(--paper)}
+.v-macro small{display:block;font-size:.74rem;color:var(--muted);font-weight:600}
+.v-macro b{font-size:1.35rem;font-weight:900;font-variant-numeric:tabular-nums}
+.v-macro b em{font-style:normal;font-size:.8rem;margin-left:2px}
+.donut-wrap{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}
+.donut{width:150px;height:150px;rotate:-90deg}
+.donut circle{fill:none;stroke-width:22}
+.legend{display:grid;gap:9px;font-weight:700;font-size:.92rem}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:13px;height:13px;border-radius:4px;background:var(--k)}
+.legend b{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:700;font-size:.82rem}
+.tip{margin-top:auto;display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--lime-tint);font-weight:600;font-size:.9rem;line-height:1.35}
+.tip .brocco-slot{width:42px;flex:none}
+.under18{position:absolute;right:-18px;top:-20px;rotate:7deg;font-weight:900;font-size:.82rem;padding:.55em .9em;border-radius:12px;background:var(--forest-deep);color:var(--lime);box-shadow:0 10px 20px -10px rgba(0,0,0,.5)}
+
+/* Learn */
+.learn{background:var(--forest);color:var(--paper)}
+.learn::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(rgba(239,242,228,.06) 1.3px,transparent 1.5px) 0 0/22px 22px}
+.learn__top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.quiz{position:relative;background:var(--white);color:var(--text);border-radius:30px;padding:22px;box-shadow:0 14px 0 var(--forest-deep),0 50px 70px -30px rgba(0,0,0,.6);max-width:480px;justify-self:center;width:100%}
+.quiz__bar{display:flex;align-items:center;gap:10px}
+.quiz__bar .prog{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.quiz__bar .prog i{display:block;height:100%;width:20%;background:var(--lime);border-radius:5px;transition:width .6s cubic-bezier(.3,1.4,.5,1)}
+.quiz__bar small{font-weight:700;color:var(--muted);font-size:.8rem}
+.quiz .overline{color:var(--forest);margin-top:18px;display:block}
+.quiz h3{font-size:1.45rem;letter-spacing:-.02em;line-height:1.1;margin-top:6px}
+.quiz__say{display:flex;align-items:center;gap:10px;margin-top:14px}
+.quiz__say .brocco-slot{width:56px;flex:none}
+.say{position:relative;font-weight:600;font-size:.92rem;padding:10px 13px;border-radius:14px;background:var(--paper);line-height:1.3}
+.say::before{content:"";position:absolute;left:-7px;top:50%;translate:0 -50%;border:7px solid transparent;border-right-color:var(--paper);border-left:0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.opt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 8px 10px;border-radius:18px;background:var(--white);box-shadow:inset 0 0 0 2px var(--line),0 4px 0 var(--line);transition:transform .12s,box-shadow .2s,background .2s;text-align:center}
+.opt:hover{transform:translateY(-2px)}
+.opt:active{transform:translateY(3px);box-shadow:inset 0 0 0 2px var(--line),0 1px 0 var(--line)}
+.opt img{width:58px;height:58px;margin-bottom:4px}
+.opt b{font-size:.95rem}
+.opt small{font-size:.76rem;color:var(--muted);font-weight:600}
+.opt.right{background:var(--lime-tint);box-shadow:inset 0 0 0 2.5px var(--forest),0 4px 0 var(--forest)}
+.opt.wrong{background:#FFE3DC;box-shadow:inset 0 0 0 2.5px var(--coral),0 4px 0 var(--coral)}
+.opt[disabled]{cursor:default}
+.result{display:none;margin-top:16px;padding:16px;border-radius:18px;background:var(--paper)}
+.result.show{display:block}
+.result__msg{font-weight:900;font-size:1.05rem}
+.bars{display:grid;gap:8px;margin-top:12px}
+.barrow{display:grid;grid-template-columns:96px 1fr 52px;gap:10px;align-items:center;font-size:.84rem;font-weight:700}
+.barrow .track{height:12px;border-radius:6px;background:var(--white);overflow:hidden}
+.barrow .track i{display:block;height:100%;border-radius:6px;background:var(--dash);width:var(--v);transform-origin:left;transition:transform .8s cubic-bezier(.2,.9,.3,1)}
+.barrow.top .track i{background:var(--forest)}
+.barrow b{text-align:right;font-variant-numeric:tabular-nums}
+.src{margin-top:10px;font-size:.74rem;color:var(--muted);line-height:1.4}
+.src code{font-family:var(--mono);font-size:.7rem}
+.again{margin-top:12px;font-weight:800;font-size:.86rem;text-decoration:underline;text-underline-offset:3px}
+.path-wrap{position:relative;margin-top:clamp(60px,8vw,110px)}
+.path-wrap svg.path{width:100%;height:auto;overflow:visible}
+.path-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+.path-head h3{font-size:clamp(1.6rem,2.6vw,2.2rem)}
+.path-head p{color:var(--muted-on-ink);max-width:44ch}
+.units-list{display:none}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:clamp(50px,7vw,90px)}
+.game{position:relative;border-radius:26px;padding:22px;min-height:330px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 0 rgba(0,0,0,.22)}
+.game:nth-child(1){background:var(--lime);color:var(--forest-deep);rotate:-1.5deg}
+.game:nth-child(2){background:var(--paper);color:var(--text);rotate:1deg}
+.game:nth-child(3){background:var(--ink);color:var(--paper);rotate:-.6deg;box-shadow:inset 0 0 0 1.5px var(--ink-line),0 10px 0 rgba(0,0,0,.22)}
+.game .overline{opacity:.75}
+.game h3{font-size:1.65rem;letter-spacing:-.02em;margin-top:8px}
+.game p{margin-top:8px;font-weight:600;font-size:.95rem;line-height:1.4;opacity:.85;max-width:30ch}
+.game__art{position:relative;margin-top:auto;height:130px}
+.game__art img{position:absolute;width:64px}
+
+/* Friends */
+.friends__grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,5vw,70px);align-items:center}
+.league{margin-top:30px;max-width:360px;background:var(--white);border-radius:var(--r-md);padding:16px;box-shadow:0 0 0 1.5px var(--line)}
+.league__head{display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.league__head small{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--forest);background:var(--lime-tint);padding:.25em .55em;border-radius:6px}
+.lrow{display:grid;grid-template-columns:22px 28px 1fr auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-weight:700;font-size:.92rem}
+.lrow:first-of-type{border-top:0}
+.lrow .av{width:28px;height:28px;font-size:12px;box-shadow:none}
+.lrow b{font-variant-numeric:tabular-nums}
+.lrow.me{color:var(--forest)}
+.lrow .n{color:var(--muted);font-variant-numeric:tabular-nums}
+.fan{position:relative;height:540px}
+.bitecard{position:absolute;left:50%;top:50%;width:236px;margin:-190px 0 0 -118px;background:var(--white);border-radius:24px;padding:9px 9px 13px;box-shadow:0 30px 50px -28px rgba(14,25,18,.55),0 0 0 1.5px rgba(20,40,28,.06)}
+.bitecard__img{position:relative;height:270px;border-radius:17px;overflow:hidden}
+.bitecard__img img{width:100%;height:100%;object-fit:cover}
+.bitecard__meta{position:absolute;top:9px;left:9px;right:9px;display:flex;align-items:center;gap:7px;color:#fff;font-weight:800;font-size:.84rem;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.bitecard__meta .av{width:26px;height:26px;font-size:11px}
+.bitecard__meta time{margin-left:auto;font-weight:600;font-size:.76rem}
+.late{font-size:.66rem;font-weight:800;padding:.15em .45em;border-radius:6px;background:rgba(255,255,255,.25);text-shadow:none}
+.bitecard p{padding:10px 5px 0;font-weight:700;font-size:.92rem;line-height:1.3}
+.bitecard .react{position:absolute;right:-12px;bottom:28px;display:flex;align-items:center;gap:5px;font-weight:800;font-size:.78rem;padding:.4em .7em;border-radius:12px;background:var(--lime);color:var(--forest-deep);box-shadow:0 8px 16px -8px rgba(0,0,0,.4)}
+
+/* Privacy */
+.privacy{background:var(--ink);color:var(--on-ink)}
+.privacy::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 85% 10%,rgba(101,140,62,.35),transparent 40%)}
+.big-say{font-size:clamp(2rem,4.6vw,4rem);font-weight:900;letter-spacing:-.03em;line-height:1.06;max-width:22ch;text-wrap:balance;margin-top:26px}
+.big-say .w{opacity:var(--o,1)}
+.big-say .hl{color:var(--lime)}
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:clamp(60px,8vw,110px);border-top:1.5px solid var(--ink-line)}
+.num{padding:30px 24px 0 0;border-right:1.5px solid var(--ink-line)}
+.num:last-child{border-right:0}
+.num+.num{padding-left:clamp(16px,3vw,40px)}
+.num b{display:block;font-size:clamp(5rem,12vw,10.5rem);font-weight:900;letter-spacing:-.05em;line-height:.85;color:var(--lime);font-variant-numeric:tabular-nums}
+.num p{margin-top:16px;font-weight:700;font-size:1.05rem;color:var(--on-ink);max-width:22ch}
+.num p small{display:block;font-weight:500;color:var(--muted-on-ink);font-size:.92rem;margin-top:4px}
+
+/* CTA */
+.cta{background:var(--lime);color:var(--forest-deep);text-align:center}
+.cta__inner{display:grid;justify-items:center;gap:22px}
+.cta .brocco-slot{width:150px}
+.cta h2{font-size:clamp(3rem,8vw,7rem);letter-spacing:-.045em;line-height:.88}
+.cta .lede{color:var(--forest-deep);opacity:.85;margin-inline:auto;text-align:center}
+.badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.badge{display:inline-flex;align-items:center;gap:9px;padding:.6em 1em;border-radius:14px;background:var(--forest-deep);color:var(--paper);font-weight:700;font-size:.86rem;line-height:1.1;text-align:left}
+.badge svg{width:20px;height:20px}
+.badge small{display:block;font-size:.68rem;font-weight:600;color:var(--lime);text-transform:uppercase;letter-spacing:.1em}
+
+/* Footer */
+.foot{position:relative;overflow:hidden;padding:clamp(60px,8vw,100px) 0 0}
+.wordmark{position:relative;overflow:hidden;padding-top:clamp(70px,11vw,170px);display:flex;justify-content:center;font-weight:900;font-size:clamp(5rem,21.5vw,21rem);letter-spacing:-.06em;line-height:.8;color:var(--forest);user-select:none;margin-top:clamp(40px,6vw,70px)}
+.wordmark span{display:inline-block}
+.peek{position:absolute;left:50%;bottom:0;width:clamp(110px,15vw,210px);translate:-50% 0;z-index:-1}
+.foot__bar{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;align-items:center;padding:22px var(--gutter) 28px;max-width:var(--maxw);margin:0 auto;font-size:.86rem;color:var(--muted);font-weight:600}
+.foot__cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;align-items:start}
+.foot__cols h4{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:12px}
+.foot__cols a{display:block;text-decoration:none;font-weight:700;padding:3px 0}
+.foot__cols a:hover{color:var(--forest);text-decoration:underline}
+.foot__legal{font-size:.86rem;color:var(--muted);line-height:1.5;max-width:52ch}
+.foot__brand{font-weight:900;font-size:1.6rem;letter-spacing:-.03em;color:var(--forest)}
+.pausebtn{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.86rem;padding:.45em .85em;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.pausebtn svg{width:13px}
+
+/* Brocco */
+.brocco-slot{display:block;line-height:0}
+.brocco{display:block;width:100%;height:auto;overflow:visible}
+.b-arm{transform:rotate(var(--a))}
+.brocco--wave .b-arm.r{animation:wave 1.05s ease-in-out infinite alternate}
+@keyframes wave{from{transform:rotate(var(--a))}to{transform:rotate(calc(var(--a) + 30deg))}}
+.brocco--cheer .b-arm{animation:cheer .42s ease-in-out infinite alternate}
+@keyframes cheer{to{transform:rotate(calc(var(--a) * .8))}}
+.brocco--cheer .b-body{animation:hop .42s ease-in-out infinite alternate}
+@keyframes hop{to{transform:translateY(-7px)}}
+.b-eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.8s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+
+html.still *,html.still *::before,html.still *::after{animation-play-state:paused!important}
+
+/* Responsive */
+@media (min-width:1241px){
+  .note{right:-178px;top:176px;rotate:-4deg}
+  .note svg{left:-58px;top:16px}
+}
+@media (max-width:1240px){
+  .note svg{display:none}
+  .float--fdc{right:-40px}
+  .bubble--1{right:-40px}
+}
+@media (max-width:960px){
+  .hero__grid{grid-template-columns:1fr;padding-top:112px;gap:56px}
+  .stage-holder{order:2}
+  .how__grid,.plates__grid,.learn__top,.friends__grid{grid-template-columns:1fr}
+  .games{grid-template-columns:1fr}
+  .game{min-height:280px}
+  .fan{height:auto;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 4px 30px;margin-inline:calc(-1*var(--gutter));padding-inline:var(--gutter)}
+  .bitecard{position:relative;left:auto;top:auto;margin:0;flex:none;scroll-snap-align:center;transform:none!important}
+  .foot__cols{grid-template-columns:1fr 1fr}
+  .foot__cols>div:first-child{grid-column:1/-1}
+}
+@media (max-width:700px){
+  .float,.bubble{display:none}
+  .sticker{display:none}
+  .sticker.keep{display:block;top:auto!important;left:auto!important;right:auto!important;--w:62px!important}
+  .sticker.keep.k1{left:2%!important;bottom:3%!important}
+  .sticker.keep.k2{right:2%!important;bottom:12%!important}
+  .note{right:6px;top:-34px;font-size:1.5rem}
+  .note svg{display:none}
+  .board__head{display:none}
+  .prow{grid-template-columns:1fr;gap:6px;padding:12px 2px}
+  .wire{display:none}
+  .qs{grid-template-columns:1fr}
+  .nums{grid-template-columns:1fr}
+  .num{border-right:0;border-bottom:1.5px solid var(--ink-line);padding:26px 0 26px!important}
+  .num:last-child{border-bottom:0}
+  .units-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;padding:0;list-style:none}
+  .units-list li{font-weight:700;font-size:.9rem;padding:9px 12px;border-radius:12px;background:rgba(239,242,228,.08)}
+  .units-list li span{font-family:var(--mono);color:var(--lime);font-size:.72rem;margin-right:6px}
+  .path-labels{display:none}
+  .flip__body{height:340px}
+  .donut-wrap{grid-template-columns:120px 1fr}
+  .donut{width:120px;height:120px}
+  .v-macros{grid-template-columns:1fr 1fr}
+  .under18{right:-6px}
+  .wl{flex-direction:column;padding:10px}
+  .wl input{padding:12px}
+  .tapes{height:150px}
+  .tape__item{font-size:1.15rem}
+  .tape__item img{width:32px;height:32px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<a class="sr-only" href="#how">Skip to how BitePals works</a>
+
+<nav class="nav" aria-label="Main">
+  <a class="nav__logo" href="#top" aria-label="BitePals, back to top"><span class="brocco-slot" data-brocco="rest" data-label="" aria-hidden="true"></span>BitePals</a>
+  <div class="nav__links">
+    <a href="#how">How it works</a>
+    <a href="#learn">Lessons</a>
+    <a href="#friends">Friends</a>
+    <a href="#privacy">Privacy</a>
+  </div>
+  <a class="btn" href="#hero" data-try>Try the demo</a>
+</nav>
+
+<main id="top">
+
+<!-- HERO -->
+<header class="hero on-dark" id="hero">
+  <div class="sticker" style="--w:96px;left:3%;top:24%;--d:7s" data-depth="18" aria-hidden="true"><img src="assets/food/avocado.svg" alt=""></div>
+  <div class="sticker" style="--w:74px;left:44%;top:14%;--d:5.5s;--r0:8deg;--r1:-4deg" data-depth="30" aria-hidden="true"><img src="assets/food/egg.svg" alt=""></div>
+  <div class="sticker keep k1" style="--w:88px;left:36%;bottom:6%;--d:6.4s" data-depth="24" aria-hidden="true"><img src="assets/food/edamame.svg" alt=""></div>
+  <div class="sticker" style="--w:104px;right:3%;top:16%;--d:8s;--r0:-10deg;--r1:2deg" data-depth="14" aria-hidden="true"><img src="assets/food/salmon.svg" alt=""></div>
+  <div class="sticker keep k2" style="--w:90px;right:5%;bottom:9%;--d:6.8s" data-depth="22" aria-hidden="true"><img src="assets/food/rice.svg" alt=""></div>
+  <div class="sticker" style="--w:66px;left:9%;bottom:10%;--d:5.8s;--r0:12deg;--r1:-2deg" data-depth="34" aria-hidden="true"><img src="assets/food/mango.svg" alt=""></div>
+
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="hero__soon h-in"><i aria-hidden="true"></i>Coming soon to iPhone and Android</p>
+      <h1 aria-label="Bite into better habits.">
+        <span class="ln h-in" aria-hidden="true">Bite into</span>
+        <span class="ln h-in" aria-hidden="true"><span class="marker" id="marker">better habits.<span class="crumbs" aria-hidden="true"></span></span></span>
+      </h1>
+      <p class="hero__sub h-in">When Bite Time pops, snap your plate with your friends. BitePals tells you what's on it, and Brocco teaches you one small food fact a day.</p>
+      <div class="hero__cta h-in">
+        <a class="btn" href="#hero" data-try>Try the demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn--ghost" href="#how">See how it works</a>
+      </div>
+      <p class="hero__fine h-in">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No ads, no tracking</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Friends never see your numbers</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>15 languages</span>
+      </p>
+    </div>
+
+    <div class="stage-holder h-in" id="stageHolder">
+      <div class="stage" id="stage" role="group" aria-label="Try it: post a Bite on a demo phone">
+        <p class="note" aria-hidden="true">Go on, snap it!
+          <svg viewBox="0 0 64 70" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M58 6C40 6 22 18 16 44"/><path d="M8 34l8 12 10-9"/></svg>
+        </p>
+
+        <div class="float float--bt" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg>
+          Bite Time · Lunch
+        </div>
+        <div class="float float--streak" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.6 2.4c.5 3-1 4.6-2.5 6.3C8.6 10.4 7 12.2 7 15a5 5 0 0 0 10 0c0-1.7-.7-3-1.5-4 .1 1.4-.4 2.5-1.4 3 .5-3.3-.6-8.6-1.5-11.6z"/></svg>
+          12-day lesson streak
+        </div>
+        <div class="float float--fdc" id="fdcChip" aria-hidden="true"><span>USDA FoodData Central</span><b>Salmon · FDC 175167</b></div>
+        <div class="bubble bubble--1" aria-hidden="true"><span class="av" style="--c:var(--lime)">M</span>that bowl is unreal</div>
+        <div class="bubble bubble--2" aria-hidden="true"><span class="av" style="--c:var(--leaf);--fc:#fff">T</span>recipe please</div>
+        <div class="bubble bubble--3" aria-hidden="true"><span class="av" style="--c:var(--honey)">I</span>edamame gang</div>
+
+        <div class="phone">
+          <div class="screen" id="screen">
+            <span class="island" aria-hidden="true"></span>
+            <div class="status" aria-hidden="true"><span>12:46</span>
+              <span class="status__icons">
+                <svg viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+                <svg viewBox="0 0 26 12" fill="none"><rect x=".7" y=".7" width="21" height="10.6" rx="3.3" stroke="currentColor" stroke-width="1.3" opacity=".5"/><rect x="2.4" y="2.4" width="15" height="7.2" rx="2" fill="currentColor"/><path d="M23.6 4v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
+              </span>
+            </div>
+
+            <!-- Feed: Bite Time, friends locked -->
+            <div class="layer layer--feed">
+              <div class="lf">
+                <div class="appbar">
+                  <span class="appbar__me" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+                  <p class="appbar__brand">BitePals<small>Friends</small></p>
+                  <span class="brocco-slot" data-brocco="rest" id="barBrocco" aria-hidden="true"></span>
+                </div>
+                <div class="btcard" id="btcard">
+                  <div class="btcard__top">
+                    <div>
+                      <p class="overline">Bite Time · Lunch</p>
+                      <p class="timer" id="timer">01:59</p>
+                      <p class="btcard__sub" id="timerSub">left to post on time</p>
+                    </div>
+                    <span class="brocco-slot" data-brocco="wave" id="heroBrocco" aria-hidden="true"></span>
+                  </div>
+                  <button class="btn-app" id="snapBtn" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M3.5 8.5h3.2L8.4 6h7.2l1.7 2.5h3.2v11h-17z"/><circle cx="12" cy="13.5" r="3.6"/></svg>
+                    Snap my plate
+                  </button>
+                </div>
+                <div class="yourow" id="yourow" aria-hidden="true">
+                  <img src="assets/img/poke-square.jpg" alt="">
+                  <div><b>Your Bite · 12:49</b><span>Shared with your friends</span></div>
+                  <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="#1F3D2A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                </div>
+                <p class="feedrow"><b id="feedTitle">6 friends posted</b><span id="feedSub">Post yours to unlock</span></p>
+                <div class="tiles" aria-hidden="true">
+                  <figure class="tile"><img src="assets/img/plate-bowl.jpg" alt=""><span class="tile__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><figcaption class="tile__meta"><span class="av" style="--c:var(--lime)">M</span>Maya<time>12:46</time></figcaption><p class="tile__cap">green bowl, extra crunch</p></figure>
+                  <figure class="tile"><img src="assets/img/plate-ramen.jpg" alt=""><span class="tile__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><figcaption class="tile__meta"><span class="av" style="--c:var(--leaf);--fc:#fff">T</span>Theo<time>12:47</time></figcaption><p class="tile__cap">ramen o'clock</p></figure>
+                  <figure class="tile"><img src="assets/img/plate-chickpea.jpg" alt=""><span class="tile__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><figcaption class="tile__meta"><span class="av" style="--c:var(--honey)">I</span>Ines<time>12:47</time></figcaption><p class="tile__cap">meal prep sunday is paying off</p></figure>
+                  <figure class="tile"><img src="assets/img/plate-soba.jpg" alt=""><span class="tile__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><figcaption class="tile__meta"><span class="av" style="--c:var(--forest);--fc:#fff">S</span>Sami<time>12:48</time></figcaption><p class="tile__cap">first try at soba</p></figure>
+                </div>
+                <div class="tabbar" aria-hidden="true">
+                  <span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="9" cy="9" r="3.4"/><circle cx="17" cy="10" r="2.6"/><path d="M3 19c.8-3 3.2-4.6 6-4.6s5.2 1.6 6 4.6M15.5 14.6c2.5-.3 4.6 1 5.5 3.6"/></svg></span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11M12 11c0-4 3-7 7-7 0 4-3 7-7 7zM12 14c0-3-2.4-5.5-6-5.5 0 3 2.4 5.5 6 5.5z"/></svg></span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/></svg></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Camera -->
+            <div class="layer layer--cam" aria-hidden="true">
+              <p class="cam-hint">Only the food photo goes to the AI, never your selfie</p>
+              <div class="cam-view">
+                <img class="cam-photo" src="assets/img/poke-square.jpg" alt="">
+                <span class="cam-c tl"></span><span class="cam-c tr"></span><span class="cam-c bl"></span><span class="cam-c br"></span>
+              </div>
+              <p class="cam-label">Lunch</p>
+              <span class="shutter"></span>
+              <span class="flash"></span>
+            </div>
+
+            <!-- Analysis -->
+            <div class="layer layer--scan" aria-hidden="true">
+              <div class="scanphoto">
+                <img src="assets/img/poke-square.jpg" alt="">
+                <span class="scanline"></span>
+                <div class="scanphoto__top"><span class="pillbtn round"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="pillbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg>Retake</span></div>
+                <span class="lbl" style="--x:44%;--y:23%"><i></i><span>Avocado</span></span>
+                <span class="lbl" style="--x:72%;--y:33%"><i></i><span>Carrot</span></span>
+                <span class="lbl as" style="--x:54%;--y:45%"><i></i><span>Sauce?</span></span>
+                <span class="lbl as" style="--x:20%;--y:45%"><i></i><span>Rice?</span></span>
+                <span class="lbl" style="--x:38%;--y:59%"><i></i><span>Salmon</span></span>
+                <span class="lbl" style="--x:79%;--y:57%"><i></i><span>Edamame</span></span>
+                <span class="lbl" style="--x:30%;--y:76%"><i></i><span>Cucumber</span></span>
+                <span class="lbl" style="--x:60%;--y:81%"><i></i><span>Red cabbage</span></span>
+                <span class="scanstatus">Naming what's on your plate…</span>
+              </div>
+              <div class="sheet" id="sheet">
+                <p class="overline">What's on your plate</p>
+                <div class="sheet__head">
+                  <div><h4>Salmon poke bowl</h4><p class="kcal">≈ <span id="kcalNum">580</span><small>kcal</small></p></div>
+                  <span class="brocco-slot" data-brocco="wow" id="sheetBrocco" aria-hidden="true"></span>
+                </div>
+                <span class="est">Estimate · check 2 amounts</span>
+                <div class="macros">
+                  <div class="macro"><small>Protein</small><b>34<em>g</em></b></div>
+                  <div class="macro"><small>Carbs</small><b>50<em>g</em></b></div>
+                  <div class="macro"><small>Fat</small><b>24<em>g</em></b></div>
+                </div>
+                <p class="found">8 things found<span>Tap to adjust</span></p>
+                <div class="chips"><span class="chip">Salmon 100 g</span><span class="chip">Avocado ¼</span><span class="chip">Edamame 50 g</span><span class="chip q">White rice 150 g?</span><span class="chip q">Soy sauce 16 g?</span><span class="chip">Carrot 40 g</span></div>
+                <div class="platebar" aria-hidden="true"><i style="flex:33;background:#C98B45"></i><i style="flex:33;background:var(--forest)"></i><i style="flex:34;background:var(--leaf)"></i></div>
+                <div class="platekey"><span style="--k:#C98B45">Grains</span><span style="--k:var(--forest)">Protein foods</span><span style="--k:var(--leaf)">Veg &amp; fruit</span></div>
+                <button class="btn-app" id="postBtn" type="button" tabindex="-1">Post to friends</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="replay" id="replay" type="button" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg>Play it again
+        </button>
+        <p class="sr-only" aria-live="polite" id="demoLive"></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="tapes" aria-hidden="true">
+  <div class="tape tape--lime"><div class="tape__track" id="tapeFoods"></div><div class="tape__track" aria-hidden="true"></div></div>
+  <div class="tape tape--ink" style="--t:38s"><div class="tape__track" id="tapeWords"></div><div class="tape__track"></div></div>
+</div>
+
+<!-- HOW -->
+<section class="sec" id="how" aria-labelledby="how-title">
+  <div class="wrap how__grid" id="howGrid">
+    <div class="how__left">
+      <p class="kicker">From photo to facts</p>
+      <h2 id="how-title" class="split">The AI names the food. The database does the maths.</h2>
+      <p class="lede">With your OK, the photo of your plate goes to the AI. It names what it sees, nothing more. Every number then comes from USDA FoodData Central, the public food database of the US Department of Agriculture.</p>
+      <ul class="how__points">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Results are labelled as estimates.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Nothing is dropped silently. Foods we can't match are listed.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Your selfie never goes to the AI.</li>
+      </ul>
+      <div class="photo-card" aria-hidden="true">
+        <img src="assets/img/poke-square.jpg" alt="">
+        <span class="lbl" style="--x:44%;--y:23%"><i></i><span>Avocado</span></span>
+        <span class="lbl" style="--x:72%;--y:33%"><i></i><span>Carrot</span></span>
+        <span class="lbl as" style="--x:20%;--y:45%"><i></i><span>Rice?</span></span>
+        <span class="lbl" style="--x:38%;--y:59%"><i></i><span>Salmon</span></span>
+        <span class="lbl" style="--x:79%;--y:57%"><i></i><span>Edamame</span></span>
+        <span class="photo-card__tag">lunch · 12:49</span>
+      </div>
+    </div>
+
+    <div class="board" id="board">
+      <div class="board__head" aria-hidden="true"><span>The AI says</span><span></span><span><span>USDA FoodData Central says</span><span>kcal</span></span></div>
+      <ol class="pipe" aria-label="What the AI named, matched to the USDA database">
+        <li class="prow"><span class="ainame">Salmon <em>seen</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 175167</code><span class="db__desc">Fish, salmon, Atlantic, farmed, raw</span></span><span class="db__amt">100 g</span><b class="db__kcal" data-v="208">208</b></span></li>
+        <li class="prow"><span class="ainame">Avocado <em>seen</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 171705</code><span class="db__desc">Avocados, raw, all commercial varieties</span></span><span class="db__amt">¼ · 50 g</span><b class="db__kcal" data-v="80">80</b></span></li>
+        <li class="prow"><span class="ainame">Edamame <em>seen</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 168411</code><span class="db__desc">Edamame, frozen, prepared</span></span><span class="db__amt">50 g</span><b class="db__kcal" data-v="61">61</b></span></li>
+        <li class="prow"><span class="ainame">Carrot <em>seen</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 170393</code><span class="db__desc">Carrots, raw</span></span><span class="db__amt">40 g</span><b class="db__kcal" data-v="16">16</b></span></li>
+        <li class="prow"><span class="ainame">Red cabbage <em>seen</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 169977</code><span class="db__desc">Cabbage, red, raw</span></span><span class="db__amt">30 g</span><b class="db__kcal" data-v="9">9</b></span></li>
+        <li class="prow"><span class="ainame">Cucumber <em>seen</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 168409</code><span class="db__desc">Cucumber, with peel, raw</span></span><span class="db__amt">30 g</span><b class="db__kcal" data-v="5">5</b></span></li>
+        <li class="prow as"><span class="ainame">Rice <em>assumed</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code>FDC 168878</code><span class="db__desc">Rice, white, long-grain, regular, enriched, cooked</span></span><span class="db__amt q" id="riceAmt">150 g?</span><b class="db__kcal" id="riceKcal">195</b></span></li>
+        <li class="prow as"><span class="ainame">Sauce <em>assumed</em></span><span class="wire" aria-hidden="true"></span><span class="db"><span class="db__id"><code id="sauceFdc">FDC 174277</code><span class="db__desc" id="sauceDesc">Soy sauce made from soy and wheat (shoyu)</span></span><span class="db__amt q">1 tbsp?</span><b class="db__kcal" id="sauceKcal">8</b></span></li>
+      </ol>
+      <div class="total">
+        <p class="total__label">Your plate<small>Estimate, rounded to the nearest 10</small></p>
+        <p class="total__num" aria-live="polite">≈ <span id="totalNum">580</span><small>kcal</small></p>
+      </div>
+      <div class="qs">
+        <div class="qbox"><p>How much rice? <span>question 1 of 2</span></p>
+          <div class="seg" data-q="rice" role="group" aria-label="How much rice?">
+            <button type="button" data-v="75" data-k="97.5" aria-pressed="false">75 g</button>
+            <button type="button" data-v="150" data-k="195" aria-pressed="true">150 g</button>
+            <button type="button" data-v="300" data-k="390" aria-pressed="false">300 g</button>
+          </div>
+        </div>
+        <div class="qbox"><p>Which sauce? <span>question 2 of 2</span></p>
+          <div class="seg" data-q="sauce" role="group" aria-label="Which sauce?">
+            <button type="button" data-k="8.48" data-fdc="174277" data-d="Soy sauce made from soy and wheat (shoyu)" aria-pressed="true">Soy sauce</button>
+            <button type="button" data-k="93.84" data-fdc="171009" data-d="Salad dressing, mayonnaise, regular" aria-pressed="false">Mayonnaise</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATES -->
+<section class="panel plates sec" id="plates" aria-labelledby="plates-title">
+  <div class="wrap plates__grid">
+    <div>
+      <p class="kicker" style="color:var(--forest-deep)">Your view, your call</p>
+      <h2 id="plates-title" class="split" style="margin-top:20px">Numbers or plates. Flip it.</h2>
+      <p class="lede" style="margin-top:22px">Some days you want the grams. Some days you'd rather not see a single number. Plate view swaps calories for food groups and tips.</p>
+      <div class="rules">
+        <p class="rule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/></svg>Under 18? Plates and tips only. Calorie numbers never show.</p>
+        <p class="rule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>No weight-loss goals, at any age.</p>
+        <p class="rule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Pregnant or breastfeeding? Targets stay out, and BitePals suggests talking to a professional.</p>
+      </div>
+    </div>
+
+    <div class="flip" id="flip">
+      <span class="under18" aria-hidden="true">Under 18: plates, always</span>
+      <div class="flip__top">
+        <p class="flip__dish">Salmon poke bowl<small>Lunch · 12:49</small></p>
+        <div class="toggle" id="toggle" data-view="numbers" role="group" aria-label="Choose how this meal is shown">
+          <span class="toggle__thumb" aria-hidden="true"></span>
+          <button type="button" data-view="numbers" aria-pressed="true">Numbers</button>
+          <button type="button" data-view="plates" aria-pressed="false">Plates</button>
+        </div>
+      </div>
+      <div class="flip__body">
+        <div class="view view--numbers" id="viewNumbers">
+          <p class="v-big">≈ <span id="vKcal">580</span><small>kcal</small></p>
+          <p class="v-est">Estimate · from USDA FoodData Central</p>
+          <div class="v-macros">
+            <div class="v-macro"><small>Protein</small><b>34<em>g</em></b></div>
+            <div class="v-macro"><small>Carbs</small><b>50<em>g</em></b></div>
+            <div class="v-macro"><small>Fat</small><b>24<em>g</em></b></div>
+            <div class="v-macro"><small>Fibre</small><b>9<em>g</em></b></div>
+          </div>
+        </div>
+        <div class="view view--plates" id="viewPlates" aria-hidden="true">
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 160 160" aria-hidden="true">
+              <circle cx="80" cy="80" r="58" stroke="var(--paper)"/>
+              <circle class="seg-c" cx="80" cy="80" r="58" stroke="#C98B45" data-from="0" data-len="33"/>
+              <circle class="seg-c" cx="80" cy="80" r="58" stroke="var(--forest)" data-from="33" data-len="33"/>
+              <circle class="seg-c" cx="80" cy="80" r="58" stroke="var(--leaf)" data-from="66" data-len="34"/>
+            </svg>
+            <div>
+              <p class="v-big" style="font-size:2.4rem">3 food groups</p>
+              <div class="legend" style="margin-top:12px">
+                <span style="--k:#C98B45"><i></i>Grains<b>33%</b></span>
+                <span style="--k:var(--forest)"><i></i>Protein foods<b>33%</b></span>
+                <span style="--k:var(--leaf)"><i></i>Veg &amp; fruit<b>34%</b></span>
+              </div>
+            </div>
+          </div>
+          <p class="tip"><span class="brocco-slot" data-brocco="rest" aria-hidden="true"></span>Veg, fruit, beans and whole grains bring the fibre that keeps you full.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARN -->
+<section class="panel learn sec on-dark" id="learn" aria-labelledby="learn-title">
+  <div class="wrap">
+    <div class="learn__top">
+      <div class="sec-head">
+        <p class="kicker">Learn with Brocco</p>
+        <h2 id="learn-title" class="split">One small lesson a day.</h2>
+        <p class="lede">Two minutes, real facts, and a streak that grows with learning, never with what you eat. Every answer comes with its source.</p>
+      </div>
+
+      <div class="quiz" id="quiz">
+        <div class="quiz__bar"><span class="prog"><i id="quizProg"></i></span><small>1/5</small></div>
+        <span class="overline">Protein face-off</span>
+        <h3 id="quizQ">Which has the most protein per 100 g?</h3>
+        <div class="quiz__say"><span class="brocco-slot" data-brocco="think" id="quizBrocco" aria-hidden="true"></span><p class="say" id="quizSay">Go with your gut. I'll explain after.</p></div>
+        <div class="opts" role="group" aria-labelledby="quizQ">
+          <button class="opt" type="button" data-k="yogurt"><img src="assets/food/yogurt.svg" alt=""><b>Greek yogurt</b><small>plain, nonfat</small></button>
+          <button class="opt" type="button" data-k="lentils"><img src="assets/food/lentils.svg" alt=""><b>Lentils</b><small>cooked, no salt</small></button>
+          <button class="opt" type="button" data-k="egg"><img src="assets/food/egg.svg" alt=""><b>Egg</b><small>whole, raw</small></button>
+          <button class="opt" type="button" data-k="tofu"><img src="assets/food/tofu.svg" alt=""><b>Firm tofu</b><small>calcium-set</small></button>
+        </div>
+        <div class="result" id="result" aria-live="polite">
+          <p class="result__msg" id="resultMsg"></p>
+          <div class="bars" id="bars"></div>
+          <p class="src">Protein per 100 g. Source: USDA FoodData Central, SR Legacy: <code>FDC 172475</code>, <code>171287</code>, <code>170894</code>, <code>172421</code>.</p>
+          <button class="again" type="button" id="again">Try again</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="path-wrap" id="pathWrap">
+      <div class="path-head">
+        <h3>Your path, one unit at a time</h3>
+        <p>Brocco walks it with you. In plate view, Energy detective becomes Food group detective, with no numbers.</p>
+      </div>
+      <svg class="path" id="pathSvg" viewBox="0 -60 1200 360" aria-hidden="true">
+        <path id="lp" d="M40 170 C150 40 250 40 330 120 S500 230 620 140 S800 30 900 100 S1080 220 1165 120" fill="none" stroke="rgba(239,242,228,.2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 22"/>
+        <path id="lpOn" d="M40 170 C150 40 250 40 330 120 S500 230 620 140 S800 30 900 100 S1080 220 1165 120" fill="none" stroke="var(--lime)" stroke-width="10" stroke-linecap="round"/>
+        <g id="nodes"></g>
+        <g class="path-labels" id="nodeLabels"></g>
+        <g id="walker"></g>
+      </svg>
+      <ol class="units-list">
+        <li><span>01</span>Plate basics</li><li><span>02</span>Protein on a budget</li><li><span>03</span>Reading labels</li>
+        <li><span>04</span>Energy detective</li><li><span>05</span>Kitchen remix</li>
+      </ol>
+    </div>
+
+    <div class="games">
+      <article class="game">
+        <p class="overline">Mini-game · Kitchen remix</p>
+        <h3>A bowl for everyone</h3>
+        <p>Read the order, swap ingredients, then serve.</p>
+        <div class="game__art" aria-hidden="true">
+          <img src="assets/food/quinoa.svg" alt="" style="left:0;bottom:6px;width:86px">
+          <img src="assets/food/tofu.svg" alt="" style="left:96px;bottom:44px">
+          <img src="assets/food/chicken.svg" alt="" style="left:178px;bottom:4px">
+          <svg viewBox="0 0 60 30" style="position:absolute;left:136px;bottom:22px;width:50px" fill="none" stroke="#1F3D2A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10h44l-8-7M54 20H10l8 7"/></svg>
+        </div>
+      </article>
+      <article class="game">
+        <p class="overline">Mini-game · Kitchen remix</p>
+        <h3>Package detective</h3>
+        <p>Turn the packs over, pin your evidence, then draw a conclusion.</p>
+        <div class="game__art" aria-hidden="true">
+          <img src="assets/food/granola.svg" alt="" style="left:0;bottom:0;width:92px">
+          <img src="assets/food/oats.svg" alt="" style="left:100px;bottom:26px;width:80px">
+          <svg viewBox="0 0 70 70" style="position:absolute;left:176px;bottom:18px;width:70px" fill="none" stroke="#1F3D2A" stroke-width="5" stroke-linecap="round"><circle cx="28" cy="28" r="18" fill="#fff"/><path d="M42 42l18 18"/></svg>
+        </div>
+      </article>
+      <article class="game">
+        <p class="overline">Mini-game · Kitchen remix</p>
+        <h3>Teach Brocco</h3>
+        <p>Brocco follows only the rules in his notebook. Help him connect foods to what they provide.</p>
+        <div class="game__art" aria-hidden="true">
+          <span class="brocco-slot" data-brocco="think" style="position:absolute;left:0;bottom:0;width:96px"></span>
+          <div style="position:absolute;left:112px;bottom:10px;width:150px;padding:10px 12px;border-radius:12px;background:var(--paper);color:var(--text);font-family:var(--mono);font-size:.72rem;font-weight:600;line-height:1.6;rotate:3deg">notebook<br>lentils → fibre<br>tofu → protein</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FRIENDS -->
+<section class="sec" id="friends" aria-labelledby="friends-title">
+  <div class="wrap friends__grid">
+    <div>
+      <p class="kicker">Bite Time with friends</p>
+      <h2 id="friends-title" class="split" style="margin-top:20px">Eat together, even apart.</h2>
+      <p class="lede" style="margin-top:22px">Bite Time pops at the same moment for your whole group. Post your plate and everyone else's unlocks. Late? Post anyway, it just says late. Friends see your photo and caption. Never your numbers.</p>
+      <div class="league" aria-label="Weekly league example">
+        <div class="league__head">Weekly league<small>XP from lessons only</small></div>
+        <div class="lrow"><span class="n">1</span><span class="av" style="--c:var(--honey)">I</span>Ines<b>340 XP</b></div>
+        <div class="lrow me"><span class="n">2</span><span class="av" style="--c:var(--lime)">Y</span>You<b>310 XP</b></div>
+        <div class="lrow"><span class="n">3</span><span class="av" style="--c:var(--leaf);--fc:#fff">T</span>Theo<b>280 XP</b></div>
+      </div>
+    </div>
+    <div class="fan" id="fan" aria-label="Example Bites from friends">
+      <figure class="bitecard"><div class="bitecard__img"><img src="assets/img/plate-salad.jpg" alt="A bowl of chickpeas, tomatoes, cucumber and lettuce"><figcaption class="bitecard__meta"><span class="av" style="--c:var(--pill)">N</span>Noa<time>12:49</time></figcaption></div><p>salad, but loud</p></figure>
+      <figure class="bitecard"><div class="bitecard__img"><img src="assets/img/plate-soba.jpg" alt="Soba noodles with salmon and vegetables"><figcaption class="bitecard__meta"><span class="av" style="--c:var(--forest);--fc:#fff">S</span>Sami<span class="late">late</span><time>12:58</time></figcaption></div><p>first try at soba</p></figure>
+      <figure class="bitecard"><div class="bitecard__img"><img src="assets/img/plate-ramen.jpg" alt="Ramen with a soft egg"><figcaption class="bitecard__meta"><span class="av" style="--c:var(--leaf);--fc:#fff">T</span>Theo<time>12:47</time></figcaption></div><p>ramen o'clock</p></figure>
+      <figure class="bitecard"><div class="bitecard__img"><img src="assets/img/plate-chickpea.jpg" alt="A grain bowl with chickpeas and avocado"><figcaption class="bitecard__meta"><span class="av" style="--c:var(--honey)">I</span>Ines<time>12:47</time></figcaption></div><p>meal prep sunday is paying off</p><span class="react" aria-hidden="true">recipe please</span></figure>
+      <figure class="bitecard"><div class="bitecard__img"><img src="assets/img/plate-poke.jpg" alt="A salmon poke bowl"><figcaption class="bitecard__meta"><span class="av" style="--c:var(--lime)">Y</span>You<time>12:49</time></figcaption></div><p>poke on a tuesday</p></figure>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="panel privacy sec on-dark" id="privacy" aria-labelledby="privacy-title">
+  <div class="wrap">
+    <p class="kicker">Private by design</p>
+    <h2 id="privacy-title" class="sr-only">Private by design</h2>
+    <p class="big-say" id="bigSay">Your journal is for you alone. Your plate photo goes to an AI service <span class="hl">only with your permission.</span> Your selfie never does. No ads, no tracking, and you can delete your account and your data <span class="hl">from the app, any time.</span></p>
+    <div class="nums">
+      <div class="num"><b data-to="2">2</b><p>questions at most per meal<small>Only when the camera can't tell, like a sauce under the rice.</small></p></div>
+      <div class="num"><b data-to="15">15</b><p>languages<small>From Arabic, read right to left, to Japanese.</small></p></div>
+      <div class="num"><b data-to="0">0</b><p>ads and trackers<small>In the app, and on this site.</small></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="panel cta sec" id="soon" aria-labelledby="cta-title">
+  <div class="wrap cta__inner">
+    <span class="brocco-slot" data-brocco="cheer" id="ctaBrocco" aria-hidden="true"></span>
+    <h2 id="cta-title" class="split">Bite Time is coming.</h2>
+    <p class="lede">BitePals lands on iPhone and Android soon. Until then, the demo at the top shows how it works: snap your plate, see what's on it, unlock your friends.</p>
+    <a class="btn btn--forest" href="#hero" data-try>Play the demo again
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a>
+    <div class="badges" aria-label="Platforms">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3" stroke-linecap="round"/></svg><span><small>Coming soon</small>iPhone</span></span>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M6 6h12M6 17.5h12"/></svg><span><small>Coming soon</small>Android</span></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__cols">
+    <div>
+      <p class="foot__brand">BitePals</p>
+      <p class="foot__legal" style="margin-top:10px">BitePals is a wellness and learning app. It is not a medical device and does not diagnose, treat, cure, or prevent any medical condition.</p>
+      <p class="foot__legal" style="margin-top:10px">Nutrition data: USDA FoodData Central.</p>
+    </div>
+    <div>
+      <h4>The app</h4>
+      <a href="#how">How it works</a><a href="#plates">Numbers or plates</a><a href="#learn">Lessons</a><a href="#friends">Friends</a>
+    </div>
+    <div>
+      <h4>Trust</h4>
+      <a href="#privacy">Privacy by design</a><a href="#hero" data-try>Try the demo</a>
+    </div>
+  </div>
+  <div class="wordmark" id="wordmark" aria-hidden="true">
+    <span class="brocco-slot peek" data-brocco="wave" id="peek"></span>
+    <span>B</span><span>i</span><span>t</span><span>e</span><span>P</span><span>a</span><span>l</span><span>s</span>
+  </div>
+  <div class="foot__bar">
+    <span>© 2026 BitePals. Bite into better habits.</span>
+    <button class="pausebtn" type="button" id="pauseBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span>Pause animations</span></button>
+  </div>
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const G = window.gsap;
+  if (G && window.ScrollTrigger) G.registerPlugin(ScrollTrigger);
+
+  /* ---------- Brocco, ported from the canvas board "Mascot" ---------- */
+  const MOODS = {
+    wave: { ra: -152, label: 'waving' },
+    rest: { label: 'smiling' },
+    cheer: { la: 152, ra: -152, eyes: 'happy', mouth: 'open', label: 'cheering' },
+    think: { ra: 64, front: true, mouth: 'flat', p: [81, 137, 111, 137], brows: [84, 119, -10, 116, 124, 4], label: 'thinking' },
+    worried: { la: 12, ra: -12, mouth: 'frown', p: [84, 144, 116, 144], pr: [6, 7], brows: [84, 123, -18, 116, 123, 18], sweat: true, label: 'worried' },
+    wow: { la: 72, ra: -72, mouth: 'o', p: [84, 141, 116, 141], pr: [6, 6.5], scl: 16.5, brows: [84, 117, 0, 116, 117, 0], label: 'amazed' }
+  };
+  function brocco(mood) {
+    const m = Object.assign({ la: 26, ra: -26, front: false, eyes: 'open', mouth: 'smile', brows: null, sweat: false, p: [86, 142, 114, 142], pr: [7, 8.5], scl: 14.5 }, MOODS[mood] || MOODS.wave);
+    const oc = '#1F3D2A', ow = 5;
+    const arm = (x, a, side) => `<g transform="translate(${x} 150)"><g class="b-arm ${side}" style="--a:${a}deg"><rect x="-7.5" y="-4" width="15" height="38" rx="7.5" fill="#A8C24A" stroke="${oc}" stroke-width="${ow}"/></g></g>`;
+    const b = m.brows || [84, 120, 0, 116, 120, 0];
+    const [plx, ply, prX, prY] = m.p, [prx, pry] = m.pr;
+    let mouth = '';
+    if (m.mouth === 'smile') mouth = `<path d="M91 159 Q100 168 109 159" fill="none" stroke="#15291C" stroke-width="3.2" stroke-linecap="round"/>`;
+    if (m.mouth === 'open') mouth = `<path d="M89 156 Q100 177 111 156 Z" fill="#15291C"/><ellipse cx="100" cy="167" rx="5.5" ry="3.2" fill="#FF7A5C"/>`;
+    if (m.mouth === 'flat') mouth = `<path d="M94 162 Q100 160 106 161" fill="none" stroke="#15291C" stroke-width="3.2" stroke-linecap="round"/>`;
+    if (m.mouth === 'frown') mouth = `<path d="M92 165 Q100 157 108 165" fill="none" stroke="#15291C" stroke-width="3.2" stroke-linecap="round"/>`;
+    if (m.mouth === 'o') mouth = `<ellipse cx="100" cy="163" rx="5" ry="6.5" fill="#15291C"/>`;
+    const eyes = m.eyes === 'open'
+      ? `<g class="b-eyes"><ellipse cx="84" cy="140" rx="13" ry="${m.scl}" fill="#fff"/><ellipse cx="116" cy="140" rx="13" ry="${m.scl}" fill="#fff"/><ellipse cx="${plx}" cy="${ply}" rx="${prx}" ry="${pry}" fill="#15291C"/><ellipse cx="${prX}" cy="${prY}" rx="${prx}" ry="${pry}" fill="#15291C"/><circle cx="${plx + 2.6}" cy="${ply - 3.4}" r="2.6" fill="#fff"/><circle cx="${prX + 2.6}" cy="${prY - 3.4}" r="2.6" fill="#fff"/></g>`
+      : `<g fill="none" stroke="#15291C" stroke-width="3.6" stroke-linecap="round"><path d="M74 143 Q84 131 94 143"/><path d="M106 143 Q116 131 126 143"/></g>`;
+    const brows = m.brows ? `<g fill="#2F5523"><rect x="${b[0] - 8}" y="${b[1] - 2.5}" width="16" height="5" rx="2.5" transform="rotate(${b[2]} ${b[0]} ${b[1]})"/><rect x="${b[3] - 8}" y="${b[4] - 2.5}" width="16" height="5" rx="2.5" transform="rotate(${b[5]} ${b[3]} ${b[4]})"/></g>` : '';
+    return `<svg class="brocco brocco--${mood}" viewBox="-6 -6 212 232" aria-hidden="true" focusable="false">
+<ellipse cx="100" cy="213" rx="50" ry="6" fill="#0E1912" opacity=".13"/>
+<g class="b-body">
+${arm(62, m.la, 'l')}${m.front ? '' : arm(138, m.ra, 'r')}
+<rect x="79" y="184" width="17" height="25" rx="8.5" fill="#A8C24A" stroke="${oc}" stroke-width="${ow}"/><rect x="104" y="184" width="17" height="25" rx="8.5" fill="#A8C24A" stroke="${oc}" stroke-width="${ow}"/>
+<ellipse cx="85" cy="208.5" rx="12.5" ry="6.5" fill="#93AD3C" stroke="${oc}" stroke-width="${ow}"/><ellipse cx="115" cy="208.5" rx="12.5" ry="6.5" fill="#93AD3C" stroke="${oc}" stroke-width="${ow}"/>
+<path d="M70 96 C68 126 52 146 52 172 C52 198 74 206 100 206 C126 206 148 198 148 172 C148 146 132 126 130 96 Z" fill="#BFD65C" stroke="${oc}" stroke-width="${ow}" stroke-linejoin="round"/>
+<path d="M130 96 C132 126 148 146 148 172 C148 198 126 206 100 206 C122 201 135 189 137 169 C139 143 124 122 121 96 Z" fill="#AECA4F"/>
+<ellipse cx="78" cy="181" rx="9" ry="13" fill="#CFE173" opacity=".8" transform="rotate(18 78 181)"/>
+<g fill="#4E7D2E" stroke="${oc}" stroke-width="${ow}"><circle cx="100" cy="54" r="40"/><circle cx="60" cy="76" r="32"/><circle cx="140" cy="76" r="32"/><circle cx="78" cy="99" r="22"/><circle cx="122" cy="99" r="22"/><circle cx="100" cy="98" r="26"/></g>
+<g fill="#6A9A3F"><circle cx="100" cy="49" r="37"/><circle cx="60" cy="71" r="29"/><circle cx="140" cy="71" r="29"/><circle cx="78" cy="92" r="19"/><circle cx="122" cy="92" r="19"/><circle cx="100" cy="91" r="23"/></g>
+<ellipse cx="84" cy="30" rx="11" ry="6.5" fill="#8DBD55" transform="rotate(-28 84 30)"/><ellipse cx="47" cy="60" rx="7" ry="4.5" fill="#8DBD55" transform="rotate(-40 47 60)"/><ellipse cx="128" cy="55" rx="6" ry="4" fill="#8DBD55" transform="rotate(-25 128 55)"/>
+<g fill="none" stroke="#578A35" stroke-width="2.4" stroke-linecap="round"><path d="M110 66 q5 -5 10 0"/><path d="M70 86 q4.5 -4.5 9 0"/><path d="M126 88 q4.5 -4.5 9 0"/><path d="M90 72 q4 -4 8 0"/><path d="M146 66 q4 -4 8 0"/></g>
+<path d="M100 20 Q98.5 25 100 31" fill="none" stroke="#4E7D2E" stroke-width="3" stroke-linecap="round"/><path d="M101 18 C104 7 115 1 125 4 C122 15 111 21 101 18 Z" fill="#D4D952" stroke="${oc}" stroke-width="3.5" stroke-linejoin="round"/><path d="M104 16 Q113 10 121 7" fill="none" stroke="#A6AB2C" stroke-width="1.6" stroke-linecap="round"/>
+${brows}${eyes}
+<ellipse cx="69" cy="155" rx="7.5" ry="4.5" fill="#FF9C7D" opacity=".55"/><ellipse cx="131" cy="155" rx="7.5" ry="4.5" fill="#FF9C7D" opacity=".55"/>
+${mouth}${m.front ? arm(138, m.ra, 'r') : ''}
+${m.sweat ? '<path d="M142 110 C146 116 148 119 148 122 A6 6 0 0 1 136 122 C136 119 138 116 142 110 Z" fill="#6CC4F2"/>' : ''}
+</g></svg>`;
+  }
+  const setMood = (el, mood) => { if (el) el.innerHTML = brocco(mood); };
+  $$('[data-brocco]').forEach(el => setMood(el, el.dataset.brocco));
+
+  /* ---------- Tapes ---------- */
+  const foods = [['avocado', 'Avocado'], ['edamame', 'Edamame'], ['salmon', 'Salmon'], ['chickpeas', 'Chickpeas'], ['quinoa', 'Quinoa'], ['egg', 'Egg'], ['spinach', 'Spinach'], ['natto', 'Natto'], ['mango', 'Mango'], ['lentils', 'Lentils'], ['tofu', 'Tofu'], ['oats', 'Oats'], ['yogurt', 'Greek yogurt'], ['rice', 'Brown rice']];
+  const tf = $('#tapeFoods');
+  tf.innerHTML = foods.map(([f, n]) => `<span class="tape__item"><img src="assets/food/${f}.svg" alt="">${n}</span>`).join('');
+  tf.nextElementSibling.innerHTML = tf.innerHTML;
+  const tw = $('#tapeWords');
+  tw.innerHTML = ['Bite Time', 'Snap your plate', 'Learn one thing', 'Unlock your friends', 'Real food data', 'Plates or numbers'].map(w => `<span class="tape__item">${w}</span>`).join('');
+  tw.nextElementSibling.innerHTML = tw.innerHTML;
+
+  /* ---------- Phone stage scaling ---------- */
+  const stage = $('#stage'), holder = $('#stageHolder');
+  function fitStage() {
+    const avail = holder.clientWidth;
+    const s = Math.min(1, avail / 340);
+    stage.style.transform = s < 1 ? `scale(${s})` : '';
+    holder.style.height = s < 1 ? `${690 * s}px` : '';
+  }
+  fitStage(); addEventListener('resize', fitStage);
+
+  /* ---------- Bite Time countdown ---------- */
+  const timerEl = $('#timer'); let left = 119, ticking = setInterval(() => {
+    left = Math.max(0, left - 1);
+    timerEl.textContent = `0${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
+    if (!left) { $('#timerSub').textContent = 'Late? Post anyway'; clearInterval(ticking); }
+  }, 1000);
+
+  /* ---------- Hero demo ---------- */
+  const live = $('#demoLive'), snapBtn = $('#snapBtn'), postBtn = $('#postBtn'), replay = $('#replay');
+  const heroBrocco = $('#heroBrocco'), sheetBrocco = $('#sheetBrocco');
+  let demo, state = 'idle', autoTimer, waitPost, postAsked = false;
+
+  function buildDemo() {
+    const tl = G.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+    tl.add(() => { state = 'running'; live.textContent = 'Snapping your plate.'; })
+      .to(snapBtn, { y: 3, boxShadow: '0 1px 0 #A6AB2C', duration: .09 })
+      .to(snapBtn, { y: 0, boxShadow: '0 4px 0 #A6AB2C', duration: .16 })
+      .to('.note', { autoAlpha: 0, y: -10, duration: .3 }, '<')
+      .set('.layer--cam', { autoAlpha: 1 })
+      .to('.status', { color: '#fff', duration: .2 }, '<')
+      .fromTo('.layer--cam', { clipPath: 'circle(0% at 50% 60%)' }, { clipPath: 'circle(140% at 50% 60%)', duration: .65, ease: 'power2.inOut' })
+      .fromTo('.cam-photo', { scale: 1.35, rotate: -6 }, { scale: 1, rotate: 0, duration: 1.2, ease: 'power2.out' }, '<')
+      .fromTo('.cam-c', { scale: 1.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: .45, stagger: .06, ease: 'back.out(2)' }, '<.25')
+      .to('.shutter', { scale: .84, duration: .1 }, '+=.2')
+      .to('.shutter', { scale: 1, duration: .25 })
+      .fromTo('.flash', { autoAlpha: 1 }, { autoAlpha: 0, duration: .55, ease: 'power1.out' }, '<')
+      .set('.layer--scan', { autoAlpha: 1 }, '<')
+      .set('.layer--cam', { autoAlpha: 0 }, '<.05')
+      .fromTo('.scanphoto>img', { scale: 1.12 }, { scale: 1, duration: 1.6, ease: 'power2.out' }, '<')
+      .to('.scanstatus', { autoAlpha: 1, duration: .25 }, '<.1')
+      .fromTo('.scanline', { autoAlpha: 1, y: -70 }, { y: 300, duration: 1, ease: 'none', repeat: 1, yoyo: true }, '<')
+      .fromTo('.layer--scan .lbl', { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: .4, stagger: .11, ease: 'back.out(2.4)' }, '-=1.15')
+      .to('.scanline', { autoAlpha: 0, duration: .2 })
+      .to('.scanstatus', { autoAlpha: 0, duration: .2 }, '<')
+      .add(() => { live.textContent = '8 things found: salmon, avocado, edamame, carrot, red cabbage, cucumber, and two to check, rice and sauce.'; })
+      .to('#sheet', { yPercent: 0, duration: .75, ease: 'expo.out' })
+      .add(count($('#kcalNum'), 0, 580, 1.1), '<.15')
+      .from('.sheet .macro, .sheet .found, .sheet .chip', { y: 10, autoAlpha: 0, duration: .4, stagger: .04 }, '<.1')
+      .from('.platebar i', { scaleX: 0, transformOrigin: 'left center', duration: .5, stagger: .12 }, '<.3')
+      .to('#fdcChip', { autoAlpha: 1, x: 0, duration: .5, ease: 'back.out(2)' }, '<')
+      .addLabel('analysed')
+      .add(() => {
+        postBtn.tabIndex = 0;
+        if (!reduce) G.to(postBtn, { scale: 1.05, duration: .35, repeat: 3, yoyo: true, ease: 'sine.inOut' });
+      })
+      .addPause('analysed+=0.01', () => { if (postAsked) { G.delayedCall(.05, () => demo.play()); return; } waitPost = G.delayedCall(2.4, () => demo.play()); })
+      .to(postBtn, { y: 3, boxShadow: '0 1px 0 #A6AB2C', duration: .09 })
+      .to(postBtn, { y: 0, boxShadow: '0 4px 0 #A6AB2C', duration: .16 })
+      .to('.layer--scan', { autoAlpha: 0, scale: .94, duration: .45, ease: 'power2.in' })
+      .to('.status', { color: '#14281C', duration: .2 }, '<.25')
+      .to('#fdcChip', { autoAlpha: 0, x: 20, duration: .3 }, '<')
+      .to('#btcard', { height: 0, paddingTop: 0, paddingBottom: 0, autoAlpha: 0, duration: .5, ease: 'power2.inOut' }, '<.2')
+      .to('#yourow', { height: 58, autoAlpha: 1, duration: .5, ease: 'power2.inOut' }, '<')
+      .add(() => { $('#feedTitle').textContent = 'Everyone posted'; $('#feedSub').textContent = 'Unlocked'; live.textContent = 'Posted. Your friends’ Bites are unlocked.'; })
+      .to('.tile img', { filter: 'blur(0px) saturate(1.1)', scale: 1, duration: .8, stagger: .14 }, '+=.05')
+      .to('.tile__lock', { scale: 0, rotate: -40, autoAlpha: 0, duration: .35, stagger: .14, ease: 'back.in(2)' }, '<')
+      .to('.tile__cap', { autoAlpha: 1, y: 0, duration: .4, stagger: .14 }, '<.25')
+      .fromTo('.bubble', { autoAlpha: 0, scale: .4, y: 20 }, { autoAlpha: 1, scale: 1, y: 0, duration: .5, stagger: .28, ease: 'back.out(2.2)' }, '<.2')
+      .add(finish);
+    return tl;
+  }
+
+  function finish() { $('#feedTitle').textContent = 'Everyone posted'; $('#feedSub').textContent = 'Unlocked'; setMood(heroBrocco, 'cheer'); setMood($('#barBrocco'), 'cheer'); state = 'done'; replay.hidden = false; postBtn.tabIndex = -1; live.textContent = 'Posted. Your friends\u2019 Bites are unlocked.'; }
+  function count(el, from, to, dur) {
+    const o = { v: from };
+    return G.to(o, { v: to, duration: dur, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v); } });
+  }
+
+  function startDemo(auto) {
+    clearTimeout(autoTimer);
+    if (state !== 'idle') return;
+    if (!G) { fallbackDemo(); return; }
+    if (reduce) { demo.seek('analysed+=0.02').pause(); state = 'waiting'; postBtn.tabIndex = 0; postBtn.focus({ preventScroll: true }); live.textContent = '8 things found. Press Post to friends.'; return; }
+    demo.play(0);
+  }
+  function post() {
+    if (!G) return;
+    if (waitPost) waitPost.kill();
+    if (reduce) { demo.seek(demo.duration()).pause(); finish(); return; }
+    if (demo.paused()) demo.play(); else postAsked = true;
+  }
+  function resetDemo() {
+    if (waitPost) waitPost.kill();
+    G.killTweensOf(postBtn); G.set(postBtn, { scale: 1 });
+    demo.pause(0); postAsked = false;
+    state = 'idle'; replay.hidden = true;
+    setMood(heroBrocco, 'wave'); setMood($('#barBrocco'), 'rest');
+    $('#feedTitle').textContent = '6 friends posted'; $('#feedSub').textContent = 'Post yours to unlock';
+    G.set('.note', { autoAlpha: 1, y: 0 });
+  }
+  function fallbackDemo() {
+    const s = $('#screen');
+    if (!s.classList.contains('is-fallback-scan')) { s.classList.add('is-fallback-scan'); $('#sheet').style.transform = 'none'; postBtn.tabIndex = 0; return; }
+  }
+
+  if (G) {
+    G.set('#sheet', { y: 0, yPercent: 105 });
+    G.set('#fdcChip', { x: -20 });
+    demo = buildDemo();
+    snapBtn.addEventListener('click', () => startDemo(false));
+    postBtn.addEventListener('click', post);
+    replay.addEventListener('click', () => { resetDemo(); G.delayedCall(.35, () => startDemo(false)); });
+    // Autoplay once if the visitor watches without touching.
+    if (!reduce && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && state === 'idle') autoTimer = setTimeout(() => startDemo(true), 4200);
+        else clearTimeout(autoTimer);
+      }, { threshold: .6 });
+      io.observe(stage);
+    }
+  } else {
+    snapBtn.addEventListener('click', fallbackDemo);
+    postBtn.addEventListener('click', () => { const s = $('#screen'); s.classList.remove('is-fallback-scan'); s.classList.add('is-fallback-done'); $$('.tile img').forEach(i => i.style.filter = 'none'); $$('.tile__lock').forEach(l => l.remove()); $$('.tile__cap').forEach(c => c.style.opacity = 1); });
+  }
+
+  /* ---------- How: live questions ---------- */
+  const fixed = 208 + 80.4 + 60.5 + 16.4 + 9.3 + 4.5; // seen items, kcal as sent by the server for the demo meal
+  let rice = 195, sauce = 8.48;
+  function retotal(animate) {
+    const t = Math.round((fixed + rice + sauce) / 10) * 10;
+    const el = $('#totalNum');
+    if (G && animate && !reduce) { const o = { v: +el.textContent }; G.to(o, { v: t, duration: .6, ease: 'power2.out', onUpdate: () => el.textContent = Math.round(o.v) }); }
+    else el.textContent = t;
+  }
+  $$('.seg').forEach(group => group.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $$('button', group).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    if (group.dataset.q === 'rice') { rice = +b.dataset.k; $('#riceAmt').textContent = b.dataset.v + ' g'; $('#riceKcal').textContent = Math.round(rice); $('#riceAmt').classList.remove('q'); }
+    else { sauce = +b.dataset.k; $('#sauceFdc').textContent = 'FDC ' + b.dataset.fdc; $('#sauceDesc').textContent = b.dataset.d; $('#sauceKcal').textContent = Math.round(sauce); }
+    retotal(true);
+    if (G && !reduce) G.fromTo(b.closest('.qbox'), { scale: .98 }, { scale: 1, duration: .4, ease: 'back.out(3)' });
+  }));
+
+  /* ---------- Plates toggle ---------- */
+  const toggle = $('#toggle'), vN = $('#viewNumbers'), vP = $('#viewPlates');
+  const C = 2 * Math.PI * 58;
+  const segs = $$('.seg-c');
+  function drawDonut(on) {
+    segs.forEach((c, i) => {
+      const len = +c.dataset.len / 100 * C, from = +c.dataset.from / 100 * C;
+      c.style.strokeDasharray = `${Math.max(0, len - 3)} ${C}`;
+      c.style.strokeDashoffset = -from;
+      if (G && !reduce) G.fromTo(c, { strokeDasharray: `0 ${C}` }, { strokeDasharray: `${Math.max(0, len - 3)} ${C}`, duration: on ? .8 : 0, delay: .15 + i * .12, ease: 'power3.out' });
+    });
+  }
+  drawDonut(false);
+  toggle.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const view = b.dataset.view; if (toggle.dataset.view === view) return;
+    toggle.dataset.view = view;
+    $$('button', toggle).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    const show = view === 'plates' ? vP : vN, hide = view === 'plates' ? vN : vP;
+    show.removeAttribute('aria-hidden'); hide.setAttribute('aria-hidden', 'true');
+    if (G && !reduce) {
+      G.to(hide, { autoAlpha: 0, y: -14, duration: .25, ease: 'power2.in' });
+      G.fromTo(show, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: .5, delay: .18, ease: 'back.out(1.8)' });
+      if (view === 'plates') drawDonut(true);
+      else { count($('#vKcal'), 0, 580, .9).delay(.2); G.from('.v-macro', { y: 16, autoAlpha: 0, stagger: .06, duration: .4, delay: .25 }); }
+      G.fromTo('#flip', { scale: .96 }, { scale: 1, duration: .55, ease: 'back.out(3)' });
+    } else { hide.style.visibility = 'hidden'; hide.style.opacity = 0; show.style.visibility = 'visible'; show.style.opacity = 1; }
+  });
+
+  /* ---------- Quiz ---------- */
+  const DATA = { tofu: ['Firm tofu', 17.27], egg: ['Egg', 12.56], yogurt: ['Greek yogurt', 10.19], lentils: ['Lentils', 9.02] };
+  const quizBrocco = $('#quizBrocco'), result = $('#result');
+  $$('.opt').forEach(o => o.addEventListener('click', () => {
+    const k = o.dataset.k, right = k === 'tofu';
+    $$('.opt').forEach(x => { x.disabled = true; if (x.dataset.k === 'tofu') x.classList.add('right'); });
+    if (!right) o.classList.add('wrong');
+    setMood(quizBrocco, right ? 'cheer' : 'worried');
+    $('#quizSay').textContent = right ? 'Yes! Firm tofu wins this one.' : 'Close call. Firm tofu comes out on top.';
+    $('#resultMsg').textContent = right ? 'Right. About 17 g of protein per 100 g.' : `${DATA[k][0]} has ${DATA[k][1].toFixed(1)} g. Firm tofu has 17.3 g.`;
+    $('#bars').innerHTML = Object.entries(DATA).map(([key, [n, v]], i) => `<div class="barrow${i === 0 ? ' top' : ''}"><span>${n}</span><span class="track"><i style="--v:${(v / 20 * 100).toFixed(1)}%;transform:scaleX(0)"></i></span><b>${v.toFixed(1)} g</b></div>`).join('');
+    result.classList.add('show');
+    $('#quizProg').style.width = '40%';
+    requestAnimationFrame(() => requestAnimationFrame(() => $$('#bars .track i').forEach((i, n) => { i.style.transitionDelay = n * 90 + 'ms'; i.style.transform = 'scaleX(1)'; })));
+    if (G && !reduce) {
+      G.fromTo(o, { scale: .94 }, { scale: 1, duration: .5, ease: 'back.out(3)' });
+      if (!right) G.fromTo(o, { x: -6 }, { x: 0, duration: .45, ease: 'elastic.out(1,.3)' });
+      G.from(result, { y: 14, autoAlpha: 0, duration: .45, ease: 'power2.out' });
+    }
+  }));
+  $('#again').addEventListener('click', () => {
+    $$('.opt').forEach(x => { x.disabled = false; x.classList.remove('right', 'wrong'); });
+    result.classList.remove('show'); setMood(quizBrocco, 'think');
+    $('#quizSay').textContent = 'Go with your gut. I’ll explain after.'; $('#quizProg').style.width = '20%';
+    $('.opt').focus();
+  });
+
+  /* ---------- Learning path ---------- */
+  const lp = $('#lp'), lpOn = $('#lpOn'), L = lp.getTotalLength();
+  const UNITS = ['Plate basics', 'Protein on a budget', 'Reading labels', 'Energy detective', 'Kitchen remix'];
+  const stops = [0.02, 0.26, 0.5, 0.74, 0.98];
+  const ns = 'http://www.w3.org/2000/svg';
+  stops.forEach((f, i) => {
+    const p = lp.getPointAtLength(f * L);
+    const g = document.createElementNS(ns, 'g'); g.setAttribute('class', 'node'); g.dataset.f = f;
+    g.innerHTML = `<circle cx="${p.x}" cy="${p.y}" r="24" fill="#1F3D2A" stroke="rgba(239,242,228,.35)" stroke-width="4"/><text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="16" fill="#EFF2E4">0${i + 1}</text>`;
+    $('#nodes').appendChild(g);
+    const t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', p.x); t.setAttribute('y', p.y + 56); t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-family', 'Gabarito, sans-serif'); t.setAttribute('font-weight', '800'); t.setAttribute('font-size', '19'); t.setAttribute('fill', '#EFF2E4'); t.setAttribute('stroke', '#31593F'); t.setAttribute('stroke-width', '8'); t.setAttribute('stroke-linejoin', 'round'); t.setAttribute('paint-order', 'stroke');
+    t.textContent = UNITS[i]; $('#nodeLabels').appendChild(t);
+  });
+  const walker = $('#walker');
+  walker.innerHTML = `<svg x="-34" y="-82" width="68" height="75" viewBox="-6 -6 212 232">${brocco('rest').replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg>`;
+  lpOn.style.strokeDasharray = L;
+  function setPath(p) {
+    const len = p * L, pt = lp.getPointAtLength(Math.max(0.01, len));
+    walker.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+    lpOn.style.strokeDashoffset = L - len;
+    $$('.node').forEach(n => {
+      const on = p >= +n.dataset.f - 0.005;
+      const c = n.firstElementChild; c.setAttribute('fill', on ? '#D4D952' : '#1F3D2A'); c.setAttribute('stroke', on ? '#1F3D2A' : 'rgba(239,242,228,.35)');
+      n.lastElementChild.setAttribute('fill', on ? '#1F3D2A' : '#EFF2E4');
+    });
+  }
+  setPath(reduce || !G ? 1 : 0.02);
+
+  /* ---------- "Try the demo" buttons ---------- */
+  $$('[data-try]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    stage.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    if (state === 'done' && G) { resetDemo(); }
+    setTimeout(() => { if (state === 'idle') startDemo(false); snapBtn.focus({ preventScroll: true }); }, reduce ? 0 : 700);
+  }));
+
+  /* ---------- Pause ambient motion ---------- */
+  $('#pauseBtn').addEventListener('click', e => {
+    const b = e.currentTarget, on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', String(on));
+    document.documentElement.classList.toggle('still', on);
+    b.lastElementChild.textContent = on ? 'Play animations' : 'Pause animations';
+  });
+
+  /* ---------- Load sequence and scroll motion ---------- */
+  if (!G || reduce) return;
+
+  // Hero entrance, then the marker bite.
+  const marker = $('#marker');
+  const crumbs = marker.querySelector('.crumbs');
+  for (let i = 0; i < 7; i++) { const c = document.createElement('i'); c.className = 'crumb'; crumbs.appendChild(c); }
+  G.set(marker, { '--mk': 0 });
+  const intro = G.timeline({ delay: .15 });
+  intro.from('.h-in', { y: 46, autoAlpha: 0, duration: .9, stagger: .09, ease: 'expo.out' })
+    .from('.sticker', { scale: 0, rotate: -40, duration: .8, stagger: .07, ease: 'back.out(2)' }, '<.2')
+    .to(marker, { '--mk': 1, duration: .55, ease: 'power3.inOut' }, '-=.9')
+    .fromTo(marker, { '--bite': '0em' }, { '--bite': '0.36em', duration: .28, ease: 'back.out(4)' }, '+=.15')
+    .fromTo('.crumb', { autoAlpha: 1, x: 0, y: 0, scale: 1 }, {
+      x: () => G.utils.random(10, 60), y: () => G.utils.random(-50, 10), scale: () => G.utils.random(.6, 1.6), rotate: () => G.utils.random(-90, 90),
+      duration: .5, ease: 'power2.out', stagger: .015
+    }, '<')
+    .to('.crumb', { y: '+=60', autoAlpha: 0, duration: .5, ease: 'power2.in' })
+    .from('.float, .note', { scale: .5, autoAlpha: 0, duration: .5, stagger: .1, ease: 'back.out(2.2)' }, '-=1.1');
+
+  // Pointer parallax on the hero stickers.
+  const hero = $('#hero');
+  const movers = $$('.sticker').map(el => ({ x: G.quickTo(el, 'x', { duration: .9, ease: 'power3' }), y: G.quickTo(el, 'y', { duration: .9, ease: 'power3' }), d: +el.dataset.depth }));
+  hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect(), nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+    movers.forEach(m => { m.x(-nx * m.d * 2); m.y(-ny * m.d * 2); });
+  });
+  G.to('#stageHolder', { yPercent: -6, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+
+  // Section titles: words rise.
+  $$('.split').forEach(h => {
+    const words = h.textContent.trim().split(/\s+/);
+    h.setAttribute('aria-label', h.textContent.trim());
+    h.innerHTML = words.map(w => `<span style="display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em"><span class="wd" style="display:inline-block" aria-hidden="true">${w}</span></span>`).join(' ');
+    G.from(h.querySelectorAll('.wd'), { yPercent: 110, rotate: 4, duration: .9, stagger: .05, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 86%', once: true } });
+  });
+
+  const mm = G.matchMedia();
+
+  // The pipeline: names travel to the database as the board scrolls by.
+  mm.add('(min-width: 961px)', () => {
+    const rows = $$('.prow');
+    const tl = G.timeline({ defaults: { ease: 'power3.out' }, scrollTrigger: { trigger: '#board', start: 'top 72%', once: true } });
+    tl.from('.photo-card .lbl', { scale: 0, opacity: 0, stagger: .1, duration: .3 }, 0);
+    rows.forEach((r, i) => {
+      tl.from(r.querySelector('.ainame'), { x: -60, opacity: 0, duration: .45 }, .2 + i * .16)
+        .from(r.querySelector('.wire'), { scaleX: 0, duration: .3 }, .4 + i * .16)
+        .from(r.querySelector('.db'), { x: 40, opacity: 0, duration: .45 }, .55 + i * .16);
+    });
+    tl.from('.total', { y: 20, opacity: 0, duration: .5 }, '-=.2')
+      .add(count($('#totalNum'), 0, 580, .9), '<')
+      .from('.qbox', { y: 30, opacity: 0, stagger: .15, duration: .5, ease: 'back.out(1.6)' }, '<.2');
+  });
+  mm.add('(max-width: 960px)', () => {
+    $$('.prow').forEach(r => G.from(r, { x: 30, autoAlpha: 0, duration: .5, ease: 'power3.out', scrollTrigger: { trigger: r, start: 'top 92%', once: true } }));
+  });
+
+  // Plates card swings in.
+  G.from('#flip', { y: 80, rotate: 8, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '#plates', start: 'top 70%', once: true } });
+  G.from('.rule', { x: -30, autoAlpha: 0, stagger: .1, duration: .6, ease: 'power3.out', scrollTrigger: { trigger: '.rules', start: 'top 85%', once: true } });
+
+  // Learn: Brocco walks the path as you scroll.
+  setPath(0.02);
+  ScrollTrigger.create({ trigger: '#pathWrap', start: 'top 80%', end: 'bottom 35%', scrub: .5, onUpdate: s => setPath(Math.max(.02, s.progress)) });
+  G.from('.quiz', { y: 70, rotate: -5, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.quiz', start: 'top 85%', once: true } });
+  G.from('.game', { y: 90, rotate: (i) => [-8, 6, -4][i], duration: .9, stagger: .12, ease: 'back.out(1.4)', scrollTrigger: { trigger: '.games', start: 'top 85%', once: true } });
+
+  // Friends: the stack fans out.
+  mm.add('(min-width: 961px)', () => {
+    const cards = $$('.bitecard');
+    const fan = [{ x: -250, y: 40, r: -16 }, { x: -125, y: 0, r: -8 }, { x: 0, y: -14, r: 0 }, { x: 125, y: 0, r: 8 }, { x: 250, y: 40, r: 16 }];
+    cards.forEach((c, i) => G.set(c, { zIndex: i === 4 ? 6 : i }));
+    G.fromTo(cards, { x: 0, y: 30, rotate: (i) => (i - 2) * 3 }, {
+      x: (i) => fan[i].x * .82, y: (i) => fan[i].y, rotate: (i) => fan[i].r, ease: 'power2.out', stagger: 0,
+      scrollTrigger: { trigger: '#fan', start: 'top 85%', end: 'center 45%', scrub: .7 }
+    });
+  });
+
+  // Privacy: words light up as you read.
+  const say = $('#bigSay');
+  const walk = node => {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(t => { if (!t) return; if (/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t)); else { const s = document.createElement('span'); s.className = 'w'; s.textContent = t; frag.appendChild(s); } });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) walk(n);
+    });
+  };
+  walk(say);
+  G.fromTo('#bigSay .w', { '--o': .16 }, { '--o': 1, stagger: .05, ease: 'none', scrollTrigger: { trigger: say, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+  $$('.num b').forEach(b => {
+    const to = +b.dataset.to;
+    ScrollTrigger.create({ trigger: b, start: 'top 88%', once: true, onEnter: () => { if (to > 0) count(b, 0, to, 1.2); G.from(b, { yPercent: 40, duration: .9, ease: 'expo.out' }); } });
+  });
+
+  // CTA and footer.
+  G.from('#ctaBrocco', { y: 120, rotate: -20, scale: .6, duration: 1.1, ease: 'elastic.out(1,.55)', scrollTrigger: { trigger: '#soon', start: 'top 70%', once: true } });
+  G.from('.wordmark span:not(.peek)', { yPercent: 100, duration: .9, stagger: .05, ease: 'expo.out', scrollTrigger: { trigger: '#wordmark', start: 'top 95%', once: true } });
+  G.fromTo('#peek', { yPercent: 100 }, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '#wordmark', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+})();
+</script>
+</body>
+</html>
